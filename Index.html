@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-title" content="Promillerechner Pro">
     <title>Promillerechner Pro</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react.dom.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -185,7 +185,6 @@
                 if (drinkTimeMode === 'now') {
                     drinkTime = new Date();
                 } else {
-                    // Datum und Uhrzeit kombinieren
                     const [hours, minutes] = customTime.split(':');
                     drinkTime = new Date(customDate);
                     drinkTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
@@ -219,7 +218,6 @@
                 localStorage.removeItem('promille_meal_time');
             };
 
-            // Pharmakokinetische Berechnungen
             const getResorptionParams = (drinkTime) => {
                 let tmax, resorptionDeficit;
                 
@@ -350,7 +348,6 @@
 
             const warning = getWarningLevel(currentBAC);
 
-            // Chart.js Grafik mit verbessertem Tooltip
             useEffect(() => {
                 if (!chartRef.current || drinks.length === 0) return;
 
@@ -362,7 +359,7 @@
 
                 const dataPoints = [];
                 const labels = [];
-                const timestamps = []; // Für Tooltip
+                const timestamps = [];
 
                 for (let t = startTime; t <= endTime; t += 10 * 60 * 1000) {
                     const testTime = new Date(t);
@@ -462,7 +459,6 @@
                             Promillerechner Pro
                         </h1>
 
-                        {/* Persönliche Daten */}
                         <div className="mb-6 space-y-4">
                             <div className="flex gap-4">
                                 <div className="flex-1">
@@ -495,7 +491,6 @@
                                 </div>
                             </div>
 
-                            {/* Essenszeit */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
                                     <Utensils />
@@ -523,7 +518,6 @@
                             </div>
                         </div>
 
-                        {/* Getränke hinzufügen */}
                         <div className="mb-6">
                             <h2 className="text-lg font-semibold text-gray-800 mb-3">Getränke hinzufügen</h2>
                             <div className="grid grid-cols-2 gap-2">
@@ -560,7 +554,6 @@
                             </button>
                         </div>
 
-                        {/* Dialog für Datum/Uhrzeit */}
                         {showDrinkDialog && (
                             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                                 <div className="bg-white rounded-lg p-6 max-w-sm w-full">
@@ -628,7 +621,6 @@
                             </div>
                         )}
 
-                        {/* Liste der Getränke */}
                         {drinks.length > 0 && (
                             <div className="mb-6">
                                 <div className="flex justify-between items-center mb-3">
@@ -690,7 +682,6 @@
                             </div>
                         )}
 
-                        {/* Ergebnis */}
                         {drinks.length > 0 && weight > 0 && (
                             <>
                                 <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-lg border-2 border-blue-200 mb-6">
@@ -703,7 +694,6 @@
                                         </div>
                                     </div>
 
-                                    {/* Phasen-Info */}
                                     <div className="mt-4 pt-4 border-t border-blue-200 space-y-2 text-sm text-gray-700">
                                         {currentPhase === 'resorption' && (
                                             <div className="bg-yellow-50 border border-yellow-200 rounded-md p-3">
@@ -738,7 +728,6 @@
                                     </div>
                                 </div>
 
-                                {/* Grafik */}
                                 <div className="bg-white p-4 rounded-lg border border-gray-200 mb-4">
                                     <h3 className="text-sm font-semibold text-gray-700 mb-3">Promilleverlauf (Hover für Details)</h3>
                                     <div style={{ height: '300px' }}>
@@ -746,7 +735,6 @@
                                     </div>
                                 </div>
 
-                                {/* Disclaimer */}
                                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                                     <p className="text-xs text-gray-600">
                                         <strong>Wissenschaftliche Grundlage:</strong> Widmark-Formel mit exponentieller Resorptionskinetik. 
