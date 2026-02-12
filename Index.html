@@ -1,1 +1,709 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Promillerechner Pro">
+    <title>Promillerechner Pro</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+        input[type="time"] {
+            min-height: 38px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
 
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // Icons
+        const Plus = () => (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+        );
+
+        const Trash2 = ({ size = 18 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+        );
+
+        const User = () => (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+        );
+
+        const Weight = () => (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M12 1v6m0 6v6"></path>
+            </svg>
+        );
+
+        const Droplet = () => (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+            </svg>
+        );
+
+        const Clock = () => (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+        );
+
+        const Utensils = () => (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+                <path d="M7 2v20"></path>
+                <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path>
+            </svg>
+        );
+
+        const Info = () => (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+        );
+
+        function PromilleRechner() {
+            const chartRef = useRef(null);
+            const chartInstance = useRef(null);
+
+            const presetDrinks = {
+                bier: { name: 'Bier', alcohol: 5, defaultAmount: 500 },
+                weisswein: { name: 'Weißwein', alcohol: 11, defaultAmount: 200 },
+                rotwein: { name: 'Rotwein', alcohol: 13, defaultAmount: 200 },
+                schnaps: { name: 'Schnaps', alcohol: 40, defaultAmount: 40 },
+                custom: { name: 'Eigene Eingabe', alcohol: 0, defaultAmount: 0 }
+            };
+
+            const [weight, setWeight] = useState(() => {
+                const saved = localStorage.getItem('promille_weight');
+                return saved ? parseFloat(saved) : 70;
+            });
+
+            const [gender, setGender] = useState(() => {
+                return localStorage.getItem('promille_gender') || 'male';
+            });
+
+            const [drinks, setDrinks] = useState(() => {
+                const saved = localStorage.getItem('promille_drinks');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    return parsed.map(d => ({...d, time: new Date(d.time)}));
+                }
+                return [];
+            });
+
+            const [lastMealTime, setLastMealTime] = useState(() => {
+                const saved = localStorage.getItem('promille_meal_time');
+                return saved || null;
+            });
+
+            const [showDrinkDialog, setShowDrinkDialog] = useState(false);
+            const [pendingDrink, setPendingDrink] = useState(null);
+            const [drinkTimeMode, setDrinkTimeMode] = useState('now');
+            const [customTime, setCustomTime] = useState('');
+
+            useEffect(() => {
+                localStorage.setItem('promille_weight', weight.toString());
+            }, [weight]);
+
+            useEffect(() => {
+                localStorage.setItem('promille_gender', gender);
+            }, [gender]);
+
+            useEffect(() => {
+                const toSave = drinks.map(d => ({...d, time: d.time.toISOString()}));
+                localStorage.setItem('promille_drinks', JSON.stringify(toSave));
+            }, [drinks]);
+
+            useEffect(() => {
+                if (lastMealTime) {
+                    localStorage.setItem('promille_meal_time', lastMealTime);
+                }
+            }, [lastMealTime]);
+
+            const addDrinkWithTime = (type) => {
+                const preset = presetDrinks[type];
+                setPendingDrink({
+                    type: type,
+                    name: preset.name,
+                    alcohol: preset.alcohol,
+                    amount: preset.defaultAmount
+                });
+                setShowDrinkDialog(true);
+                setDrinkTimeMode('now');
+                setCustomTime(new Date().toTimeString().slice(0, 5));
+            };
+
+            const confirmAddDrink = () => {
+                if (!pendingDrink) return;
+
+                let drinkTime;
+                if (drinkTimeMode === 'now') {
+                    drinkTime = new Date();
+                } else {
+                    const [hours, minutes] = customTime.split(':');
+                    drinkTime = new Date();
+                    drinkTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+                    
+                    // Falls Zeit in der Zukunft liegt (z.B. 23:00 Uhr eingegeben, aber es ist 01:00 Uhr)
+                    if (drinkTime > new Date()) {
+                        drinkTime.setDate(drinkTime.getDate() - 1);
+                    }
+                }
+
+                const newDrink = {
+                    id: Date.now(),
+                    ...pendingDrink,
+                    time: drinkTime
+                };
+
+                setDrinks([...drinks, newDrink].sort((a, b) => a.time - b.time));
+                setShowDrinkDialog(false);
+                setPendingDrink(null);
+            };
+
+            const updateDrink = (id, field, value) => {
+                setDrinks(drinks.map(drink =>
+                    drink.id === id ? { ...drink, [field]: parseFloat(value) || 0 } : drink
+                ));
+            };
+
+            const removeDrink = (id) => {
+                setDrinks(drinks.filter(drink => drink.id !== id));
+            };
+
+            const resetAll = () => {
+                setDrinks([]);
+                setLastMealTime(null);
+                localStorage.removeItem('promille_drinks');
+                localStorage.removeItem('promille_meal_time');
+            };
+
+            // Pharmakokinetische Berechnungen
+            const getResorptionRate = (drinkTime) => {
+                if (!lastMealTime) {
+                    // Nüchtern: schnelle Resorption, Tmax ~45 min
+                    return { k: 0.04, tmax: 45 };
+                }
+
+                const [mealHours, mealMinutes] = lastMealTime.split(':').map(Number);
+                const mealDate = new Date(drinkTime);
+                mealDate.setHours(mealHours, mealMinutes, 0, 0);
+
+                // Falls Essenszeit nach Trinkzeit liegt, war es am Vortag
+                if (mealDate > drinkTime) {
+                    mealDate.setDate(mealDate.getDate() - 1);
+                }
+
+                const hoursSinceMeal = (drinkTime - mealDate) / (1000 * 60 * 60);
+
+                if (hoursSinceMeal < 1) {
+                    // Kurz nach Essen: langsame Resorption, Tmax ~90 min
+                    return { k: 0.02, tmax: 90 };
+                } else if (hoursSinceMeal < 3) {
+                    // 1-3h nach Essen: mittlere Resorption, Tmax ~60 min
+                    return { k: 0.03, tmax: 60 };
+                } else {
+                    // 3h+ nach Essen: fast wie nüchtern, Tmax ~50 min
+                    return { k: 0.035, tmax: 50 };
+                }
+            };
+
+            // Berechne BAC für ein einzelnes Getränk zu einem bestimmten Zeitpunkt
+            const calculateDrinkBAC = (drink, currentTime) => {
+                if (!weight) return 0;
+
+                const reductionFactor = gender === 'male' ? 0.68 : 0.55;
+                const alcoholGrams = drink.amount * drink.alcohol * 0.8 / 100;
+                const maxBAC = alcoholGrams / (weight * reductionFactor);
+
+                const minutesSinceDrink = (currentTime - drink.time) / (1000 * 60);
+
+                if (minutesSinceDrink < 0) return 0;
+
+                const { k, tmax } = getResorptionRate(drink.time);
+
+                // Anflutungsphase: Exponentielle Sättigung
+                if (minutesSinceDrink < tmax * 2) {
+                    const resorbed = 1 - Math.exp(-k * minutesSinceDrink);
+                    return maxBAC * resorbed;
+                }
+
+                // Abflutungsphase: Linearer Abbau
+                const peakBAC = maxBAC;
+                const minutesSincePeak = minutesSinceDrink - (tmax * 1.5);
+                const degradationRate = 0.12 / 60; // Pro Minute
+                const currentBAC = peakBAC - (degradationRate * minutesSincePeak);
+
+                return Math.max(0, currentBAC);
+            };
+
+            // Gesamter BAC (Superposition aller Getränke)
+            const calculateTotalBAC = (currentTime) => {
+                return drinks.reduce((total, drink) => {
+                    return total + calculateDrinkBAC(drink, currentTime);
+                }, 0);
+            };
+
+            const currentBAC = calculateTotalBAC(new Date());
+
+            // Finde Peak-Zeit und Peak-BAC
+            const findPeakBAC = () => {
+                if (drinks.length === 0) return { time: null, bac: 0 };
+
+                const now = new Date();
+                const startTime = Math.min(...drinks.map(d => d.time.getTime()));
+                const endTime = now.getTime() + (24 * 60 * 60 * 1000); // +24h
+
+                let maxBAC = 0;
+                let peakTime = now;
+
+                for (let t = startTime; t <= endTime; t += 5 * 60 * 1000) { // 5-Min-Schritte
+                    const testTime = new Date(t);
+                    const bac = calculateTotalBAC(testTime);
+                    if (bac > maxBAC) {
+                        maxBAC = bac;
+                        peakTime = testTime;
+                    }
+                    if (bac === 0 && t > now.getTime()) break;
+                }
+
+                return { time: peakTime, bac: maxBAC };
+            };
+
+            const peak = findPeakBAC();
+
+            // Zeit bis nüchtern
+            const timeUntilSober = () => {
+                if (currentBAC === 0) return 0;
+
+                const now = new Date();
+                for (let minutes = 0; minutes < 24 * 60; minutes += 5) {
+                    const testTime = new Date(now.getTime() + minutes * 60 * 1000);
+                    if (calculateTotalBAC(testTime) === 0) {
+                        return minutes / 60;
+                    }
+                }
+                return 24;
+            };
+
+            const soberHours = timeUntilSober();
+
+            // Aktuelle Phase bestimmen
+            const getCurrentPhase = () => {
+                if (drinks.length === 0) return 'none';
+                if (currentBAC === 0) return 'sober';
+
+                const now = new Date();
+                if (now < peak.time) return 'resorption';
+                return 'elimination';
+            };
+
+            const currentPhase = getCurrentPhase();
+
+            const getWarningLevel = (bac) => {
+                if (bac === 0) return { color: 'bg-green-100 text-green-800', text: 'Nüchtern' };
+                if (bac < 0.3) return { color: 'bg-yellow-100 text-yellow-800', text: 'Leicht angetrunken' };
+                if (bac < 0.5) return { color: 'bg-orange-100 text-orange-800', text: 'Nicht fahrtüchtig' };
+                if (bac < 1.0) return { color: 'bg-red-100 text-red-800', text: 'Betrunken' };
+                return { color: 'bg-red-200 text-red-900', text: 'Stark betrunken' };
+            };
+
+            const warning = getWarningLevel(currentBAC);
+
+            // Chart.js Grafik aktualisieren
+            useEffect(() => {
+                if (!chartRef.current || drinks.length === 0) return;
+
+                const ctx = chartRef.current.getContext('2d');
+
+                // Daten für Grafik generieren
+                const now = new Date();
+                const startTime = Math.min(...drinks.map(d => d.time.getTime())) - (30 * 60 * 1000);
+                const endTime = now.getTime() + (soberHours * 60 * 60 * 1000) + (60 * 60 * 1000);
+
+                const dataPoints = [];
+                const labels = [];
+
+                for (let t = startTime; t <= endTime; t += 10 * 60 * 1000) { // 10-Min-Schritte
+                    const testTime = new Date(t);
+                    const bac = calculateTotalBAC(testTime);
+                    
+                    labels.push(testTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }));
+                    dataPoints.push(bac);
+
+                    if (bac === 0 && t > now.getTime()) break;
+                }
+
+                if (chartInstance.current) {
+                    chartInstance.current.destroy();
+                }
+
+                chartInstance.current = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Promillewert (‰)',
+                            data: dataPoints,
+                            borderColor: 'rgb(59, 130, 246)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 0,
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.parsed.y.toFixed(3) + ' ‰';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Promille (‰)'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Uhrzeit'
+                                }
+                            }
+                        }
+                    }
+                });
+
+            }, [drinks, weight, gender, lastMealTime]);
+
+            return (
+                <div className="max-w-2xl mx-auto p-4 bg-gray-50 min-h-screen">
+                    <div className="bg-white rounded-lg shadow-lg p-6 mb-4">
+                        <h1 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                            <Droplet />
+                            Promillerechner Pro
+                        </h1>
+
+                        {/* Persönliche Daten */}
+                        <div className="mb-6 space-y-4">
+                            <div className="flex gap-4">
+                                <div className="flex-1">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                                        <Weight />
+                                        Körpergewicht (kg)
+                                    </label>
+                                    <input
+                                        type="number"
+                                        value={weight}
+                                        onChange={(e) => setWeight(parseFloat(e.target.value) || 0)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                                        placeholder="70"
+                                    />
+                                </div>
+
+                                <div className="flex-1">
+                                    <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                                        <User />
+                                        Geschlecht
+                                    </label>
+                                    <select
+                                        value={gender}
+                                        onChange={(e) => setGender(e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                                    >
+                                        <option value="male">Männlich</option>
+                                        <option value="female">Weiblich</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            {/* Essenszeit */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                                    <Utensils />
+                                    Letzte Mahlzeit (Uhrzeit)
+                                </label>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="time"
+                                        value={lastMealTime || ''}
+                                        onChange={(e) => setLastMealTime(e.target.value)}
+                                        className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
+                                    />
+                                    {lastMealTime && (
+                                        <button
+                                            onClick={() => setLastMealTime(null)}
+                                            className="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+                                        >
+                                            Löschen
+                                        </button>
+                                    )}
+                                </div>
+                                <p className="text-xs text-gray-500 mt-1">
+                                    Optional: Beeinflusst Resorptionsgeschwindigkeit
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Getränke hinzufügen */}
+                        <div className="mb-6">
+                            <h2 className="text-lg font-semibold text-gray-800 mb-3">Getränke hinzufügen</h2>
+                            <div className="grid grid-cols-2 gap-2">
+                                <button
+                                    onClick={() => addDrinkWithTime('bier')}
+                                    className="px-4 py-2 bg-amber-500 text-white rounded-md hover:bg-amber-600"
+                                >
+                                    <Plus /> Bier (5%)
+                                </button>
+                                <button
+                                    onClick={() => addDrinkWithTime('weisswein')}
+                                    className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+                                >
+                                    <Plus /> Weißwein (11%)
+                                </button>
+                                <button
+                                    onClick={() => addDrinkWithTime('rotwein')}
+                                    className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                                >
+                                    <Plus /> Rotwein (13%)
+                                </button>
+                                <button
+                                    onClick={() => addDrinkWithTime('schnaps')}
+                                    className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800"
+                                >
+                                    <Plus /> Schnaps (40%)
+                                </button>
+                            </div>
+                            <button
+                                onClick={() => addDrinkWithTime('custom')}
+                                className="w-full mt-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                            >
+                                <Plus /> Eigene Eingabe
+                            </button>
+                        </div>
+
+                        {/* Dialog für Uhrzeit */}
+                        {showDrinkDialog && (
+                            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                                <div className="bg-white rounded-lg p-6 max-w-sm w-full">
+                                    <h3 className="text-lg font-semibold mb-4">Wann hast du getrunken?</h3>
+                                    
+                                    <div className="space-y-3 mb-4">
+                                        <button
+                                            onClick={() => setDrinkTimeMode('now')}
+                                            className={`w-full px-4 py-2 rounded-md ${drinkTimeMode === 'now' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+                                        >
+                                            Jetzt
+                                        </button>
+                                        <button
+                                            onClick={() => setDrinkTimeMode('custom')}
+                                            className={`w-full px-4 py-2 rounded-md ${drinkTimeMode === 'custom' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+                                        >
+                                            Andere Uhrzeit
+                                        </button>
+                                    </div>
+
+                                    {drinkTimeMode === 'custom' && (
+                                        <input
+                                            type="time"
+                                            value={customTime}
+                                            onChange={(e) => setCustomTime(e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md mb-4"
+                                        />
+                                    )}
+
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={() => setShowDrinkDialog(false)}
+                                            className="flex-1 px-4 py-2 bg-gray-200 rounded-md"
+                                        >
+                                            Abbrechen
+                                        </button>
+                                        <button
+                                            onClick={confirmAddDrink}
+                                            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md"
+                                        >
+                                            Hinzufügen
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Liste der Getränke */}
+                        {drinks.length > 0 && (
+                            <div className="mb-6">
+                                <div className="flex justify-between items-center mb-3">
+                                    <h2 className="text-lg font-semibold text-gray-800">Konsumierte Getränke</h2>
+                                    <button
+                                        onClick={resetAll}
+                                        className="text-sm text-red-600 hover:text-red-700"
+                                    >
+                                        Alle löschen
+                                    </button>
+                                </div>
+                                <div className="space-y-3">
+                                    {drinks.map((drink) => (
+                                        <div key={drink.id} className="bg-gray-50 p-3 rounded-md border border-gray-200">
+                                            <div className="flex justify-between items-start mb-2">
+                                                <div>
+                                                    <span className="font-medium text-gray-800">{drink.name}</span>
+                                                    <div className="text-xs text-gray-600 flex items-center gap-1 mt-1">
+                                                        <Clock />
+                                                        {drink.time.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    onClick={() => removeDrink(drink.id)}
+                                                    className="text-red-600 hover:text-red-700"
+                                                >
+                                                    <Trash2 />
+                                                </button>
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <div>
+                                                    <label className="block text-xs text-gray-600 mb-1">Alkohol (%)</label>
+                                                    <input
+                                                        type="number"
+                                                        value={drink.alcohol}
+                                                        onChange={(e) => updateDrink(drink.id, 'alcohol', e.target.value)}
+                                                        className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                                                        step="0.1"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs text-gray-600 mb-1">Menge (ml)</label>
+                                                    <input
+                                                        type="number"
+                                                        value={drink.amount}
+                                                        onChange={(e) => updateDrink(drink.id, 'amount', e.target.value)}
+                                                        className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Ergebnis */}
+                        {drinks.length > 0 && weight > 0 && (
+                            <>
+                                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-lg border-2 border-blue-200 mb-6">
+                                    <div className="text-center mb-4">
+                                        <div className="text-6xl font-bold text-blue-600 mb-2">
+                                            {currentBAC.toFixed(3)} ‰
+                                        </div>
+                                        <div className={`inline-block px-4 py-2 rounded-full font-semibold ${warning.color}`}>
+                                            {warning.text}
+                                        </div>
+                                    </div>
+
+                                    {/* Phasen-Info */}
+                                    <div className="mt-4 pt-4 border-t border-blue-200 space-y-2 text-sm text-gray-700">
+                                        {currentPhase === 'resorption' && (
+                                            <div className="bg-yellow-50 border border-yellow-200 rounded-md p-3">
+                                                <div className="flex items-center gap-2 font-semibold text-yellow-800 mb-1">
+                                                    <Info />
+                                                    Anflutungsphase
+                                                </div>
+                                                <p className="text-xs text-yellow-700">
+                                                    Der Alkohol wird noch resorbiert. Maximum wird erreicht um {peak.time.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })} Uhr mit ca. {peak.bac.toFixed(2)} ‰
+                                                </p>
+                                            </div>
+                                        )}
+
+                                        {currentPhase === 'elimination' && (
+                                            <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
+                                                <div className="flex items-center gap-2 font-semibold text-blue-800 mb-1">
+                                                    <Info />
+                                                    Abflutungsphase
+                                                </div>
+                                                <p className="text-xs text-blue-700">
+                                                    Der Alkohol wird abgebaut (ca. 0,12 ‰/h). Maximum war {peak.bac.toFixed(2)} ‰ um {peak.time.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })} Uhr.
+                                                </p>
+                                            </div>
+                                        )}
+
+                                        <div className="flex items-center justify-between">
+                                            <span>Voraussichtlich nüchtern in:</span>
+                                            <span className="font-medium">
+                                                {currentBAC > 0 ? `${Math.floor(soberHours)}h ${Math.round((soberHours % 1) * 60)}min` : 'Jetzt'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Grafik */}
+                                <div className="bg-white p-4 rounded-lg border border-gray-200 mb-4">
+                                    <h3 className="text-sm font-semibold text-gray-700 mb-3">Promilleverlauf</h3>
+                                    <div style={{ height: '300px' }}>
+                                        <canvas ref={chartRef}></canvas>
+                                    </div>
+                                </div>
+
+                                {/* Disclaimer */}
+                                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                    <p className="text-xs text-gray-600">
+                                        <strong>Hinweis:</strong> Berechnung basiert auf Widmark-Formel mit exponentiellen Resorptionskurven. 
+                                        Individuelle Faktoren (Stoffwechsel, Gesundheit, Medikamente) können Werte erheblich beeinflussen. 
+                                        Abbaurate: 0,12 ‰/h (Durchschnitt). Diese Werte sind Näherungen und ersetzen keine medizinische Beratung. 
+                                        Niemals unter Alkoholeinfluss fahren!
+                                    </p>
+                                </div>
+                            </>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<PromilleRechner />, document.getElementById('root'));
+    </script>
+</body>
+</html>
