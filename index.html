@@ -1,794 +1,325 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Promille">
-    <title>Promillerechner Pro</title>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            font-size: 16px;
-        }
-        
-        @media (max-width: 450px) {
-            body {
-                font-size: 14px;
-            }
-            .watch-large-text {
-                font-size: 3rem !important;
-            }
-            .watch-button {
-                min-height: 48px;
-                font-size: 16px;
-            }
-        }
-        
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            opacity: 1;
-            height: 40px;
-        }
-        
-        input[type="time"], input[type="date"], input[type="number"], input[type="text"], select {
-            min-height: 44px;
-            font-size: 16px;
-        }
-        
-        button {
-            min-height: 44px;
-            min-width: 44px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Promille">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a0a0f">
+<title>Promillerechner</title>
+<style>
+:root{--bg:#0a0a0f;--sf:#151520;--sf2:#1e1e2e;--sf3:#2a2a3e;--bd:#2e2e45;--tx:#e8e8f0;--txd:#8888a0;--txm:#555570;--ac:#4a9eff;--acg:rgba(74,158,255,.25);--gn:#34d399;--yw:#fbbf24;--or:#fb923c;--rd:#f87171;--rdd:#dc2626;--r:14px;--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;background:var(--bg);color:var(--tx);-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;font-size:16px;line-height:1.4;overflow-x:hidden;min-height:100dvh}
+.app{max-width:430px;margin:0 auto;padding:8px;padding-top:calc(var(--st)+8px);padding-bottom:calc(var(--sb)+16px);min-height:100dvh}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 4px;margin-bottom:8px}
+.hdr h1{font-size:18px;font-weight:700;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.hdr-i{width:22px;height:22px;background:linear-gradient(135deg,var(--ac),#7c6fff);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff}
+.sbtn{background:var(--sf2);border:1px solid var(--bd);color:var(--txd);border-radius:10px;padding:8px 12px;font-size:14px;cursor:pointer;min-height:36px;min-width:36px;display:flex;align-items:center;justify-content:center}
+.sbtn:active{background:var(--sf3)}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:14px;margin-bottom:10px}
+.bac-d{background:linear-gradient(145deg,var(--sf),var(--sf2));border:1px solid var(--bd);border-radius:18px;padding:20px 14px 16px;margin-bottom:10px;text-align:center;position:relative;overflow:hidden}
+.bac-d::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,var(--glow,transparent) 0%,transparent 60%);opacity:.15;pointer-events:none}
+.bac-v{font-size:3.8rem;font-weight:800;letter-spacing:-.04em;line-height:1;margin-bottom:8px;font-variant-numeric:tabular-nums;position:relative}
+.bac-u{font-size:.45em;font-weight:500;color:var(--txd);vertical-align:super}
+.badge{display:inline-block;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.st-s{background:rgba(52,211,153,.15);color:var(--gn)}.st-l{background:rgba(251,191,36,.15);color:var(--yw)}.st-i{background:rgba(251,146,60,.15);color:var(--or)}.st-d{background:rgba(248,113,113,.15);color:var(--rd)}.st-h{background:rgba(220,38,38,.2);color:var(--rdd)}
+.sg{margin-top:14px;padding-top:12px;border-top:1px solid var(--bd)}
+.sr{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:13px}
+.sl{color:var(--txd)}.sv{font-weight:600;font-variant-numeric:tabular-nums}
+.stl{font-size:12px;font-weight:600;color:var(--txd);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.db{background:var(--sf2);border:1px solid var(--bd);color:var(--tx);border-radius:12px;padding:12px 8px;font-size:14px;font-weight:600;cursor:pointer;min-height:48px;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s;font-family:inherit}
+.db:active{transform:scale(.96);background:var(--sf3)}
+.de{font-size:18px}
+.db-b{border-color:rgba(245,158,11,.3)}.db-w{border-color:rgba(168,85,247,.3)}.db-s{border-color:rgba(248,113,113,.3)}.db-c{border-color:rgba(74,158,255,.3)}
+.dlh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.clr{background:none;border:none;color:var(--rd);font-size:12px;font-weight:600;cursor:pointer;padding:4px 8px;font-family:inherit}
+.di{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.din{font-weight:600;font-size:13px}.dim{font-size:11px;color:var(--txd);margin-top:2px}
+.del{background:rgba(248,113,113,.1);border:none;color:var(--rd);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;flex-shrink:0;margin-left:8px}
+.ct{width:100%;background:var(--sf2);border:1px solid var(--bd);color:var(--ac);border-radius:12px;padding:12px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit}
+.cc{height:180px;margin-bottom:10px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:10px}
+.cc canvas{width:100%!important;height:100%!important}
+.sp{animation:sd .2s ease}
+@keyframes sd{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.srow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fl{display:block;font-size:11px;font-weight:600;color:var(--txd);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em}
+input[type=number],input[type=time],input[type=date],input[type=text],select{width:100%;background:var(--sf2);border:1px solid var(--bd);color:var(--tx);border-radius:10px;padding:10px 12px;font-size:16px;min-height:44px;outline:none;-webkit-appearance:none;font-family:inherit}
+input:focus,select:focus{border-color:var(--ac);box-shadow:0 0 0 2px var(--acg)}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238888a0' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center;z-index:100;padding:10px;padding-bottom:calc(var(--sb)+10px);animation:fi .15s ease}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.mc{background:var(--sf);border:1px solid var(--bd);border-radius:20px;padding:20px;width:100%;max-width:400px;max-height:85dvh;overflow-y:auto;animation:su .2s ease}
+@keyframes su{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mt{font-size:16px;font-weight:700;margin-bottom:16px}
+.mb{width:100%;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;min-height:48px;transition:all .15s;font-family:inherit}
+.mb:active{transform:scale(.97)}
+.mbp{background:var(--ac);color:#fff}.mbs{background:var(--sf2);border:1px solid var(--bd);color:var(--tx)}
+.mba{background:var(--ac);color:#fff;border-color:var(--ac)}.mbi{background:var(--sf2);border:1px solid var(--bd);color:var(--txd)}
+.ma{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.cf{background:var(--sf2);border-radius:12px;padding:12px;margin-bottom:12px}.cf>*+*{margin-top:10px}
+.tc{margin-bottom:12px}.tc>*+*{margin-top:6px}
+.ti{margin-top:8px}.ti>*+*{margin-top:6px}
+.ic{display:flex;align-items:center;gap:8px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:10px;padding:8px 12px;animation:fi .15s ease}
+.ic span{flex:1;font-size:12px;color:var(--rd);font-weight:600}
+.cy,.cn{border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.cy{background:var(--rd);color:#fff}.cn{background:var(--sf3);color:var(--txd)}
+.mr{display:flex;gap:8px}.mr input{flex:1}
+.mcl{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);color:var(--rd);border-radius:10px;width:44px;min-width:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
+.disc{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:10px;font-size:9px;color:var(--txm);line-height:1.5;margin-top:6px}
+.disc strong{color:var(--txd)}
+.es{text-align:center;padding:30px 20px;color:var(--txm)}.esi{font-size:32px;margin-bottom:8px}.est{font-size:13px}
+.merr{color:var(--rd);font-size:12px;font-weight:600;padding:8px;background:rgba(248,113,113,.1);border-radius:8px;margin-top:8px}
+@media(max-width:220px){body{font-size:11px}.app{padding:4px!important}.bac-v{font-size:2.2rem!important}.dg{gap:4px!important}.db{padding:8px 4px!important;font-size:11px!important;min-height:38px!important}.de{font-size:14px!important}.card{padding:8px!important}.badge{font-size:9px!important;padding:3px 8px!important}.sr{font-size:11px!important}.stl{font-size:11px!important}.di{padding:6px!important}.hdr{padding:6px 4px!important}.hdr h1{font-size:14px!important}.mc{padding:10px!important}.mb{min-height:38px!important;padding:8px!important;font-size:12px!important}.cc{height:120px!important}.disc{font-size:8px!important;padding:6px!important}}
+@media(max-width:200px){.bac-v{font-size:1.8rem!important}.dg{gap:3px!important}.db{padding:6px 3px!important;font-size:10px!important;min-height:32px!important}.de{font-size:12px!important}.sr{font-size:10px!important}.card{padding:6px!important;margin-bottom:6px!important}.hdr h1{font-size:12px!important}.disc{display:none}}
+@media(min-width:221px)and (max-width:380px){body{font-size:13px}.bac-v{font-size:3rem!important}.db{min-height:44px!important}}
+</style>
 </head>
 <body>
-    <div id="root"></div>
-
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
-
-        // Icons
-        const Plus = () => (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-        );
-
-        const Trash2 = () => (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            </svg>
-        );
-
-        const User = () => (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-        );
-
-        const Weight = () => (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="3"></circle>
-                <path d="M12 1v6m0 6v6"></path>
-            </svg>
-        );
-
-        const Droplet = () => (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
-            </svg>
-        );
-
-        const Clock = () => (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-            </svg>
-        );
-
-        const Calendar = () => (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-        );
-
-        const Utensils = () => (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
-                <path d="M7 2v20"></path>
-                <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path>
-            </svg>
-        );
-
-        const Info = () => (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="16" x2="12" y2="12"></line>
-                <line x1="12" y1="8" x2="12.01" y2="8"></line>
-            </svg>
-        );
-
-        function PromilleRechner() {
-            const chartRef = useRef(null);
-            const chartInstance = useRef(null);
-
-            const presetDrinks = {
-                bier: { name: 'Bier', alcohol: 5, defaultAmount: 500 },
-                weisswein: { name: 'Wein W', alcohol: 11, defaultAmount: 200 },
-                rotwein: { name: 'Wein R', alcohol: 13, defaultAmount: 200 },
-                schnaps: { name: 'Schnaps', alcohol: 40, defaultAmount: 40 },
-                custom: { name: '', alcohol: 0, defaultAmount: 0 }
-            };
-
-            const [weight, setWeight] = useState(() => {
-                const saved = localStorage.getItem('promille_weight');
-                return saved ? parseFloat(saved) : 70;
-            });
-
-            const [gender, setGender] = useState(() => {
-                return localStorage.getItem('promille_gender') || 'male';
-            });
-
-            const [drinks, setDrinks] = useState(() => {
-                const saved = localStorage.getItem('promille_drinks');
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    return parsed.map(d => ({...d, time: new Date(d.time)}));
-                }
-                return [];
-            });
-
-            const [lastMealTime, setLastMealTime] = useState(() => {
-                const saved = localStorage.getItem('promille_meal_time');
-                return saved || null;
-            });
-
-            const [showDrinkDialog, setShowDrinkDialog] = useState(false);
-            const [pendingDrink, setPendingDrink] = useState(null);
-            const [drinkTimeMode, setDrinkTimeMode] = useState('now');
-            const [customTime, setCustomTime] = useState('');
-            const [customDate, setCustomDate] = useState('');
-            const [showSettings, setShowSettings] = useState(false);
-            const [showChart, setShowChart] = useState(false);
-
-            // Für Custom-Eingabe
-            const [customName, setCustomName] = useState('');
-            const [customAlcohol, setCustomAlcohol] = useState('');
-            const [customAmount, setCustomAmount] = useState('');
-
-            useEffect(() => {
-                localStorage.setItem('promille_weight', weight.toString());
-            }, [weight]);
-
-            useEffect(() => {
-                localStorage.setItem('promille_gender', gender);
-            }, [gender]);
-
-            useEffect(() => {
-                const toSave = drinks.map(d => ({...d, time: d.time.toISOString()}));
-                localStorage.setItem('promille_drinks', JSON.stringify(toSave));
-            }, [drinks]);
-
-            useEffect(() => {
-                if (lastMealTime) {
-                    localStorage.setItem('promille_meal_time', lastMealTime);
-                }
-            }, [lastMealTime]);
-
-            const addDrinkWithTime = (type) => {
-                const preset = presetDrinks[type];
-                
-                if (type === 'custom') {
-                    // Leere Custom-Felder
-                    setCustomName('');
-                    setCustomAlcohol('');
-                    setCustomAmount('');
-                    setPendingDrink({
-                        type: 'custom',
-                        name: '',
-                        alcohol: 0,
-                        amount: 0
-                    });
-                } else {
-                    setPendingDrink({
-                        type: type,
-                        name: preset.name,
-                        alcohol: preset.alcohol,
-                        amount: preset.defaultAmount
-                    });
-                }
-                
-                setShowDrinkDialog(true);
-                setDrinkTimeMode('now');
-                
-                const now = new Date();
-                setCustomTime(now.toTimeString().slice(0, 5));
-                setCustomDate(now.toISOString().slice(0, 10));
-            };
-
-            const confirmAddDrink = () => {
-                if (!pendingDrink) return;
-
-                // Validierung für Custom-Eingabe
-                if (pendingDrink.type === 'custom') {
-                    if (!customName.trim() || !customAlcohol || !customAmount) {
-                        alert('Bitte alle Felder ausfüllen!');
-                        return;
-                    }
-                    pendingDrink.name = customName.trim();
-                    pendingDrink.alcohol = parseFloat(customAlcohol);
-                    pendingDrink.amount = parseFloat(customAmount);
-                }
-
-                let drinkTime;
-                if (drinkTimeMode === 'now') {
-                    drinkTime = new Date();
-                } else {
-                    const [hours, minutes] = customTime.split(':');
-                    drinkTime = new Date(customDate);
-                    drinkTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-                }
-
-                const newDrink = {
-                    id: Date.now(),
-                    ...pendingDrink,
-                    time: drinkTime
-                };
-
-                setDrinks([...drinks, newDrink].sort((a, b) => a.time - b.time));
-                setShowDrinkDialog(false);
-                setPendingDrink(null);
-            };
-
-            const updateDrink = (id, field, value) => {
-                setDrinks(drinks.map(drink =>
-                    drink.id === id ? { ...drink, [field]: parseFloat(value) || 0 } : drink
-                ));
-            };
-
-            const removeDrink = (id) => {
-                setDrinks(drinks.filter(drink => drink.id !== id));
-            };
-
-            const resetAll = () => {
-                if (confirm('Alle Getränke löschen?')) {
-                    setDrinks([]);
-                    setLastMealTime(null);
-                    localStorage.removeItem('promille_drinks');
-                    localStorage.removeItem('promille_meal_time');
-                }
-            };
-
-            const getResorptionParams = (drinkTime) => {
-                let tmax, resorptionDeficit;
-                
-                if (!lastMealTime) {
-                    tmax = 45;
-                    resorptionDeficit = 0.10;
-                } else {
-                    const [mealHours, mealMinutes] = lastMealTime.split(':').map(Number);
-                    const mealDate = new Date(drinkTime);
-                    mealDate.setHours(mealHours, mealMinutes, 0, 0);
-
-                    if (mealDate > drinkTime) {
-                        mealDate.setDate(mealDate.getDate() - 1);
-                    }
-
-                    const hoursSinceMeal = (drinkTime - mealDate) / (1000 * 60 * 60);
-
-                    if (hoursSinceMeal < 1) {
-                        tmax = 90;
-                        resorptionDeficit = 0.30;
-                    } else if (hoursSinceMeal < 2) {
-                        tmax = 75;
-                        resorptionDeficit = 0.20;
-                    } else {
-                        tmax = 60;
-                        resorptionDeficit = 0.15;
-                    }
-                }
-
-                const k = 3 / tmax;
-                return { tmax, k, resorptionDeficit };
-            };
-
-            const calculateDrinkBAC = (drink, currentTime) => {
-                if (!weight) return 0;
-
-                const reductionFactor = gender === 'male' ? 0.68 : 0.55;
-                const { tmax, k, resorptionDeficit } = getResorptionParams(drink.time);
-                
-                const alcoholGrams = drink.amount * drink.alcohol * 0.8 / 100;
-                const absorbedAlcohol = alcoholGrams * (1 - resorptionDeficit);
-                
-                const maxBAC = absorbedAlcohol / (weight * reductionFactor);
-
-                const minutesSinceDrink = (currentTime - drink.time) / (1000 * 60);
-
-                if (minutesSinceDrink < 0) return 0;
-
-                if (minutesSinceDrink <= tmax) {
-                    const resorbed = 1 - Math.exp(-k * minutesSinceDrink);
-                    return maxBAC * resorbed;
-                }
-
-                const minutesSincePeak = minutesSinceDrink - tmax;
-                const degradationRate = 0.15 / 60;
-                const currentBAC = maxBAC - (degradationRate * minutesSincePeak);
-
-                return Math.max(0, currentBAC);
-            };
-
-            const calculateTotalBAC = (currentTime) => {
-                return drinks.reduce((total, drink) => {
-                    return total + calculateDrinkBAC(drink, currentTime);
-                }, 0);
-            };
-
-            const currentBAC = calculateTotalBAC(new Date());
-
-            const findPeakBAC = () => {
-                if (drinks.length === 0) return { time: null, bac: 0 };
-
-                const now = new Date();
-                const startTime = Math.min(...drinks.map(d => d.time.getTime()));
-                const endTime = now.getTime() + (24 * 60 * 60 * 1000);
-
-                let maxBAC = 0;
-                let peakTime = now;
-
-                for (let t = startTime; t <= endTime; t += 5 * 60 * 1000) {
-                    const testTime = new Date(t);
-                    const bac = calculateTotalBAC(testTime);
-                    if (bac > maxBAC) {
-                        maxBAC = bac;
-                        peakTime = testTime;
-                    }
-                    if (bac === 0 && t > now.getTime()) break;
-                }
-
-                return { time: peakTime, bac: maxBAC };
-            };
-
-            const peak = findPeakBAC();
-
-            const timeUntilSober = () => {
-                if (currentBAC === 0) return 0;
-
-                const now = new Date();
-                for (let minutes = 0; minutes < 24 * 60; minutes += 5) {
-                    const testTime = new Date(now.getTime() + minutes * 60 * 1000);
-                    if (calculateTotalBAC(testTime) === 0) {
-                        return minutes / 60;
-                    }
-                }
-                return 24;
-            };
-
-            const soberHours = timeUntilSober();
-
-            const getCurrentPhase = () => {
-                if (drinks.length === 0) return 'none';
-                if (currentBAC === 0) return 'sober';
-
-                const now = new Date();
-                if (now < peak.time) return 'resorption';
-                return 'elimination';
-            };
-
-            const currentPhase = getCurrentPhase();
-
-            const getWarningLevel = (bac) => {
-                if (bac === 0) return { color: 'bg-green-100 text-green-800', text: 'Nüchtern' };
-                if (bac < 0.3) return { color: 'bg-yellow-100 text-yellow-800', text: 'Leicht' };
-                if (bac < 0.5) return { color: 'bg-orange-100 text-orange-800', text: 'Nicht fahrtüchtig' };
-                if (bac < 1.0) return { color: 'bg-red-100 text-red-800', text: 'Betrunken' };
-                return { color: 'bg-red-200 text-red-900', text: 'Stark betrunken' };
-            };
-
-            const warning = getWarningLevel(currentBAC);
-
-            useEffect(() => {
-                if (!chartRef.current || drinks.length === 0 || !showChart) return;
-
-                const ctx = chartRef.current.getContext('2d');
-
-                const now = new Date();
-                const startTime = Math.min(...drinks.map(d => d.time.getTime())) - (30 * 60 * 1000);
-                const endTime = now.getTime() + (soberHours * 60 * 60 * 1000) + (60 * 60 * 1000);
-
-                const dataPoints = [];
-                const labels = [];
-                const timestamps = [];
-
-                for (let t = startTime; t <= endTime; t += 10 * 60 * 1000) {
-                    const testTime = new Date(t);
-                    const bac = calculateTotalBAC(testTime);
-                    
-                    labels.push(testTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }));
-                    dataPoints.push(bac);
-                    timestamps.push(testTime);
-
-                    if (bac === 0 && t > now.getTime()) break;
-                }
-
-                if (chartInstance.current) {
-                    chartInstance.current.destroy();
-                }
-
-                chartInstance.current = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Promille',
-                            data: dataPoints,
-                            borderColor: 'rgb(59, 130, 246)',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            tension: 0.4,
-                            fill: true,
-                            pointRadius: 4,
-                            pointHoverRadius: 8,
-                            borderWidth: 3
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        interaction: {
-                            mode: 'index',
-                            intersect: false,
-                        },
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    title: function(context) {
-                                        const index = context[0].dataIndex;
-                                        const timestamp = timestamps[index];
-                                        return timestamp.toLocaleString('de-DE', { 
-                                            hour: '2-digit', 
-                                            minute: '2-digit'
-                                        });
-                                    },
-                                    label: function(context) {
-                                        return context.parsed.y.toFixed(2) + ' ‰';
-                                    }
-                                },
-                                backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                                titleFont: { size: 16, weight: 'bold' },
-                                bodyFont: { size: 14 },
-                                padding: 12
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: { font: { size: 12 } }
-                            },
-                            x: {
-                                ticks: { 
-                                    font: { size: 10 },
-                                    maxRotation: 45,
-                                    minRotation: 45
-                                }
-                            }
-                        }
-                    }
-                });
-
-            }, [drinks, weight, gender, lastMealTime, showChart]);
-
-            return (
-                <div className="w-full min-h-screen bg-gray-50 p-2">
-                    <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-3">
-                        
-                        <div className="flex items-center justify-between mb-3">
-                            <h1 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-                                <Droplet />
-                                Promille
-                            </h1>
-                            <button
-                                onClick={() => setShowSettings(!showSettings)}
-                                className="watch-button px-3 py-2 bg-gray-200 rounded-md"
-                            >
-                                ⚙️
-                            </button>
-                        </div>
-
-                        {showSettings && (
-                            <div className="mb-4 p-3 bg-gray-50 rounded-lg space-y-3">
-                                <div className="grid grid-cols-2 gap-2">
-                                    <div>
-                                        <label className="block text-xs font-medium text-gray-700 mb-1">
-                                            <Weight /> Gewicht (kg)
-                                        </label>
-                                        <input
-                                            type="number"
-                                            value={weight}
-                                            onChange={(e) => setWeight(parseFloat(e.target.value) || 0)}
-                                            className="w-full px-2 py-2 border rounded-md text-center"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-xs font-medium text-gray-700 mb-1">
-                                            <User /> Geschlecht
-                                        </label>
-                                        <select
-                                            value={gender}
-                                            onChange={(e) => setGender(e.target.value)}
-                                            className="w-full px-2 py-2 border rounded-md"
-                                        >
-                                            <option value="male">♂️ M</option>
-                                            <option value="female">♀️ W</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-700 mb-1">
-                                        <Utensils /> Letzte Mahlzeit
-                                    </label>
-                                    <div className="flex gap-2">
-                                        <input
-                                            type="time"
-                                            value={lastMealTime || ''}
-                                            onChange={(e) => setLastMealTime(e.target.value)}
-                                            className="flex-1 px-2 py-2 border rounded-md"
-                                        />
-                                        {lastMealTime && (
-                                            <button
-                                                onClick={() => setLastMealTime(null)}
-                                                className="watch-button px-3 bg-red-100 text-red-700 rounded-md"
-                                            >
-                                                ✕
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {drinks.length > 0 && (
-                            <div className="mb-4 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border-2 border-blue-200">
-                                <div className="text-center">
-                                    <div className="watch-large-text text-5xl font-bold text-blue-600 mb-2">
-                                        {currentBAC.toFixed(2)}‰
-                                    </div>
-                                    <div className={`inline-block px-3 py-2 rounded-full font-semibold text-sm ${warning.color}`}>
-                                        {warning.text}
-                                    </div>
-                                </div>
-
-                                <div className="mt-3 pt-3 border-t border-blue-200 text-sm">
-                                    <div className="flex justify-between items-center">
-                                        <span className="text-gray-700">Nüchtern in:</span>
-                                        <span className="font-bold text-blue-600">
-                                            {currentBAC > 0 ? `${Math.floor(soberHours)}h ${Math.round((soberHours % 1) * 60)}min` : 'Jetzt'}
-                                        </span>
-                                    </div>
-                                    {currentPhase === 'resorption' && peak.time && (
-                                        <div className="flex justify-between items-center mt-2">
-                                            <span className="text-gray-700">Maximum um:</span>
-                                            <span className="font-bold text-yellow-600">
-                                                {peak.time.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}
-                                            </span>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        )}
-
-                        <div className="mb-4">
-                            <h2 className="text-sm font-semibold text-gray-800 mb-2">Getränk hinzufügen</h2>
-                            <div className="grid grid-cols-2 gap-2">
-                                <button
-                                    onClick={() => addDrinkWithTime('bier')}
-                                    className="watch-button px-3 py-3 bg-amber-500 text-white rounded-lg font-medium"
-                                >
-                                    🍺 Bier
-                                </button>
-                                <button
-                                    onClick={() => addDrinkWithTime('weisswein')}
-                                    className="watch-button px-3 py-3 bg-yellow-500 text-white rounded-lg font-medium"
-                                >
-                                    🍷 Wein
-                                </button>
-                                <button
-                                    onClick={() => addDrinkWithTime('schnaps')}
-                                    className="watch-button px-3 py-3 bg-gray-700 text-white rounded-lg font-medium"
-                                >
-                                    🥃 Schnaps
-                                </button>
-                                <button
-                                    onClick={() => addDrinkWithTime('custom')}
-                                    className="watch-button px-3 py-3 bg-blue-600 text-white rounded-lg font-medium"
-                                >
-                                    ➕ Eigene
-                                </button>
-                            </div>
-                        </div>
-
-                        {drinks.length > 0 && (
-                            <div className="mb-4">
-                                <div className="flex justify-between items-center mb-2">
-                                    <h2 className="text-sm font-semibold text-gray-800">Getränke ({drinks.length})</h2>
-                                    <button
-                                        onClick={resetAll}
-                                        className="text-xs text-red-600 font-medium"
-                                    >
-                                        Alle löschen
-                                    </button>
-                                </div>
-                                <div className="space-y-2">
-                                    {drinks.map((drink) => (
-                                        <div key={drink.id} className="bg-gray-50 p-2 rounded-md border">
-                                            <div className="flex justify-between items-center mb-1">
-                                                <div className="flex-1">
-                                                    <div className="font-medium text-sm">{drink.name}</div>
-                                                    <div className="text-xs text-gray-600">
-                                                        {drink.time.toLocaleString('de-DE', { 
-                                                            hour: '2-digit', 
-                                                            minute: '2-digit' 
-                                                        })} • {drink.alcohol}% • {drink.amount}ml
-                                                    </div>
-                                                </div>
-                                                <button
-                                                    onClick={() => removeDrink(drink.id)}
-                                                    className="watch-button p-2 text-red-600"
-                                                >
-                                                    <Trash2 />
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {drinks.length > 0 && (
-                            <button
-                                onClick={() => setShowChart(!showChart)}
-                                className="w-full watch-button px-4 py-3 bg-indigo-100 text-indigo-700 rounded-lg font-medium mb-3 flex items-center justify-center gap-2"
-                            >
-                                📊 Verlaufskurve {showChart ? '▲' : '▼'}
-                            </button>
-                        )}
-
-                        {showChart && drinks.length > 0 && (
-                            <div className="mb-4 p-3 bg-white rounded-lg border">
-                                <div style={{ height: '200px' }}>
-                                    <canvas ref={chartRef}></canvas>
-                                </div>
-                            </div>
-                        )}
-
-                        {showDrinkDialog && (
-                            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2">
-                                <div className="bg-white rounded-lg p-4 w-full max-w-sm max-h-[90vh] overflow-y-auto">
-                                    <h3 className="text-base font-semibold mb-3">
-                                        {pendingDrink?.type === 'custom' ? 'Eigenes Getränk' : 'Wann getrunken?'}
-                                    </h3>
-                                    
-                                    {pendingDrink?.type === 'custom' && (
-                                        <div className="space-y-3 mb-4 p-3 bg-blue-50 rounded-lg">
-                                            <div>
-                                                <label className="block text-xs font-medium text-gray-700 mb-1">
-                                                    Name des Getränks
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    value={customName}
-                                                    onChange={(e) => setCustomName(e.target.value)}
-                                                    placeholder="z.B. Gin Tonic"
-                                                    className="w-full px-3 py-2 border rounded-lg"
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-xs font-medium text-gray-700 mb-1">
-                                                    Alkoholgehalt (Vol%)
-                                                </label>
-                                                <input
-                                                    type="number"
-                                                    value={customAlcohol}
-                                                    onChange={(e) => setCustomAlcohol(e.target.value)}
-                                                    placeholder="z.B. 10"
-                                                    step="0.1"
-                                                    className="w-full px-3 py-2 border rounded-lg"
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-xs font-medium text-gray-700 mb-1">
-                                                    Menge (ml)
-                                                </label>
-                                                <input
-                                                    type="number"
-                                                    value={customAmount}
-                                                    onChange={(e) => setCustomAmount(e.target.value)}
-                                                    placeholder="z.B. 300"
-                                                    className="w-full px-3 py-2 border rounded-lg"
-                                                />
-                                            </div>
-                                        </div>
-                                    )}
-                                    
-                                    <div className="space-y-2 mb-3">
-                                        <button
-                                            onClick={() => setDrinkTimeMode('now')}
-                                            className={`w-full watch-button px-4 py-3 rounded-lg font-medium ${drinkTimeMode === 'now' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-                                        >
-                                            ⏱️ Jetzt
-                                        </button>
-                                        <button
-                                            onClick={() => setDrinkTimeMode('custom')}
-                                            className={`w-full watch-button px-4 py-3 rounded-lg font-medium ${drinkTimeMode === 'custom' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-                                        >
-                                            📅 Andere Zeit
-                                        </button>
-                                    </div>
-
-                                    {drinkTimeMode === 'custom' && (
-                                        <div className="space-y-2 mb-3">
-                                            <input
-                                                type="date"
-                                                value={customDate}
-                                                onChange={(e) => setCustomDate(e.target.value)}
-                                                className="w-full px-3 py-2 border rounded-lg"
-                                            />
-                                            <input
-                                                type="time"
-                                                value={customTime}
-                                                onChange={(e) => setCustomTime(e.target.value)}
-                                                className="w-full px-3 py-2 border rounded-lg"
-                                            />
-                                        </div>
-                                    )}
-
-                                    <div className="grid grid-cols-2 gap-2">
-                                        <button
-                                            onClick={() => setShowDrinkDialog(false)}
-                                            className="watch-button px-4 py-3 bg-gray-200 rounded-lg font-medium"
-                                        >
-                                            Abbrechen
-                                        </button>
-                                        <button
-                                            onClick={confirmAddDrink}
-                                            className="watch-button px-4 py-3 bg-blue-600 text-white rounded-lg font-medium"
-                                        >
-                                            OK
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                    </div>
-                </div>
-            );
-        }
-
-        ReactDOM.render(<PromilleRechner />, document.getElementById('root'));
-    </script>
+<div id="root"></div>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+"use strict";
+var h=React.createElement,us=React.useState,ue=React.useEffect,ur=React.useRef,um=React.useMemo;
+
+// Storage wrapper (Watch-safe)
+var S={
+g:function(k,f){try{var v=localStorage.getItem(k);return v!==null?JSON.parse(v):f}catch(e){return f}},
+s:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},
+r:function(k){try{localStorage.removeItem(k)}catch(e){}}
+};
+
+// BAC calculation (Widmark)
+var BAC={
+rf:function(g){return g==='male'?0.68:0.55},
+DPH:0.15,ED:0.789,
+rp:function(dt,ml){
+if(!ml)return{t:45,d:0.10};
+var p=ml.split(':').map(Number),md=new Date(dt);
+md.setHours(p[0],p[1],0,0);
+if(md>dt)md.setDate(md.getDate()-1);
+var hrs=(dt-md)/3600000;
+if(hrs<1)return{t:90,d:0.30};
+if(hrs<2)return{t:75,d:0.20};
+if(hrs<3)return{t:60,d:0.15};
+return{t:45,d:0.10};
+},
+fd:function(dr,at,w,g,ml){
+if(!w||w<=0)return 0;
+var m=(at-dr.time)/60000;if(m<0)return 0;
+var r=this.rf(g),p=this.rp(dr.time,ml);
+var gr=dr.amount*dr.alcohol*this.ED/100;
+var ab=gr*(1-p.d);
+var mx=ab/(w*r);
+var k=3/p.t;
+if(m<=p.t)return mx*(1-Math.exp(-k*m));
+var el=m-p.t;
+return Math.max(0,mx-(this.DPH/60)*el);
+},
+tot:function(ds,at,w,g,ml){
+var s=0;for(var i=0;i<ds.length;i++)s+=this.fd(ds[i],at,w,g,ml);return s;
+},
+pk:function(ds,w,g,ml){
+if(!ds.length)return{time:null,bac:0};
+var n=Date.now(),st=Infinity;
+for(var i=0;i<ds.length;i++)if(ds[i].time.getTime()<st)st=ds[i].time.getTime();
+var mx=0,pt=new Date(n);
+for(var t=st;t<=n+86400000;t+=300000){
+var tm=new Date(t),b=this.tot(ds,tm,w,g,ml);
+if(b>mx){mx=b;pt=tm}
+if(b===0&&t>n)break;
+}
+return{time:pt,bac:mx};
+},
+tus:function(ds,w,g,ml){
+var n=Date.now();
+if(this.tot(ds,new Date(n),w,g,ml)===0)return 0;
+for(var m=5;m<=1440;m+=5){
+if(this.tot(ds,new Date(n+m*60000),w,g,ml)<=0)return m/60;
+}
+return 24;
+}
+};
+
+var fmt=function(d){return d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})};
+var fmtD=function(hrs){var hh=Math.floor(hrs),mm=Math.round((hrs%1)*60);return hh===0?mm+' min':hh+'h '+mm+'min'};
+function getSt(b){
+if(b===0)return{c:'st-s',t:'Nüchtern',col:'var(--gn)'};
+if(b<0.3)return{c:'st-l',t:'Leicht',col:'var(--yw)'};
+if(b<0.5)return{c:'st-i',t:'Fahruntüchtig',col:'var(--or)'};
+if(b<1.1)return{c:'st-d',t:'Erheblich alkoholisiert',col:'var(--rd)'};
+return{c:'st-h',t:'Stark alkoholisiert',col:'var(--rdd)'};
+}
+var nt=function(){return new Date().toTimeString().slice(0,5)};
+var nd=function(){return new Date().toISOString().slice(0,10)};
+var PR={bier:{n:'Bier',e:'🍺',a:5,m:500},wein:{n:'Wein',e:'🍷',a:12,m:200},schnaps:{n:'Schnaps',e:'🥃',a:40,m:40}};
+
+function App(){
+var cRef=ur(null),cInst=ur(null);
+var _w=us(function(){return S.g('pw',80)}),weight=_w[0],setW=_w[1];
+var _g=us(function(){return S.g('pg','male')}),gender=_g[0],setG=_g[1];
+var _m=us(function(){return S.g('pm',null)}),meal=_m[0],setM=_m[1];
+var _d=us(function(){var s=S.g('pd',[]);return s.map(function(d){return Object.assign({},d,{time:new Date(d.time)})})}),drinks=_d[0],setD=_d[1];
+var _ss=us(false),showSet=_ss[0],setSS=_ss[1];
+var _sc=us(false),showCh=_sc[0],setSC=_sc[1];
+var _sm=us(false),showMo=_sm[0],setSM=_sm[1];
+var _cr=us(false),confR=_cr[0],setCR=_cr[1];
+var _tk=us(0),tick=_tk[0],setTk=_tk[1];
+var _mt=us(null),mType=_mt[0],setMT=_mt[1];
+var _tm=us('now'),tMode=_tm[0],setTM=_tm[1];
+var _ct=us(nt()),cTime=_ct[0],setCT=_ct[1];
+var _cd=us(nd()),cDate=_cd[0],setCD=_cd[1];
+var _cn=us(''),cNm=_cn[0],setCN=_cn[1];
+var _ca=us(''),cAl=_ca[0],setCA=_ca[1];
+var _cm=us(''),cAm=_cm[0],setCM=_cm[1];
+var _me=us(''),mErr=_me[0],setME=_me[1];
+
+ue(function(){S.s('pw',weight)},[weight]);
+ue(function(){S.s('pg',gender)},[gender]);
+ue(function(){meal?S.s('pm',meal):S.r('pm')},[meal]);
+ue(function(){S.s('pd',drinks.map(function(d){return Object.assign({},d,{time:d.time.toISOString()})}))},[drinks]);
+ue(function(){var iv=setInterval(function(){setTk(function(t){return t+1})},30000);return function(){clearInterval(iv)}},[]);
+
+var now=new Date();
+var curBAC=um(function(){return BAC.tot(drinks,now,weight,gender,meal)},[drinks,weight,gender,meal,tick]);
+var peak=um(function(){return BAC.pk(drinks,weight,gender,meal)},[drinks,weight,gender,meal,tick]);
+var soberH=um(function(){return BAC.tus(drinks,weight,gender,meal)},[drinks,weight,gender,meal,tick]);
+var st=getSt(curBAC);
+var resorb=now<(peak.time||now);
+
+var openMo=function(type){setMT(type);setTM('now');setCT(nt());setCD(nd());setCN('');setCA('');setCM('');setME('');setSM(true)};
+
+var confDr=function(){
+var name,alc,amt;
+if(mType==='custom'){
+if(!cNm.trim()||!cAl||!cAm){setME('Alle Felder ausfüllen.');return}
+name=cNm.trim();alc=parseFloat(cAl);amt=parseFloat(cAm);
+if(isNaN(alc)||isNaN(amt)||alc<=0||amt<=0){setME('Ungültige Werte.');return}
+}else{var p=PR[mType];name=p.n;alc=p.a;amt=p.m}
+var time;
+if(tMode==='now'){time=new Date()}
+else{var hm=cTime.split(':').map(Number);time=new Date(cDate);time.setHours(hm[0],hm[1],0,0)}
+setD(function(prev){return prev.concat([{id:Date.now()+Math.random(),name:name,alcohol:alc,amount:amt,time:time,emoji:PR[mType]?PR[mType].e:'🍸'}]).sort(function(a,b){return a.time-b.time})});
+setSM(false);
+};
+
+var remDr=function(id){setD(function(p){return p.filter(function(d){return d.id!==id})})};
+var doReset=function(){setD([]);setM(null);setCR(false);S.r('pd');S.r('pm')};
+
+// Chart
+ue(function(){
+if(!cRef.current||!showCh||!drinks.length)return;
+var ctx=cRef.current.getContext('2d');
+if(cInst.current)cInst.current.destroy();
+var nMs=Date.now(),stMs=Infinity;
+for(var i=0;i<drinks.length;i++){var t=drinks[i].time.getTime();if(t<stMs)stMs=t}
+stMs-=1800000;var eMs=nMs+soberH*3600000+3600000;
+var step=Math.max(300000,(eMs-stMs)/100);
+var labels=[],data=[],ts=[];
+for(var t=stMs;t<=eMs;t+=step){
+var tm=new Date(t);labels.push(fmt(tm));
+var b=BAC.tot(drinks,tm,weight,gender,meal);data.push(b);ts.push(tm);
+if(b===0&&t>nMs)break;
+}
+cInst.current=new Chart(ctx,{type:'line',data:{labels:labels,datasets:[{data:data,borderColor:'#4a9eff',backgroundColor:'rgba(74,158,255,.08)',tension:.4,fill:true,pointRadius:0,pointHoverRadius:6,borderWidth:2.5}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:300},interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{callbacks:{title:function(c){return fmt(ts[c[0].dataIndex])},label:function(c){return c.parsed.y.toFixed(2)+' ‰'}},backgroundColor:'rgba(20,20,35,.95)',titleFont:{size:13,weight:'bold'},bodyFont:{size:12},padding:10,cornerRadius:8}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#555570',font:{size:10},callback:function(v){return v.toFixed(1)}}},x:{grid:{display:false},ticks:{color:'#555570',font:{size:9},maxRotation:45,maxTicksLimit:8}}}}});
+return function(){if(cInst.current)cInst.current.destroy()};
+},[drinks,weight,gender,meal,showCh,tick]);
+
+return h('div',{className:'app'},
+// Header
+h('div',{className:'hdr'},
+h('h1',null,h('span',{className:'hdr-i'},'‰'),'Promille'),
+h('button',{className:'sbtn',onClick:function(){setSS(!showSet)}},'⚙')
+),
+// Settings
+showSet&&h('div',{className:'card sp'},
+h('div',{className:'srow'},
+h('div',null,h('span',{className:'fl'},'Gewicht (kg)'),h('input',{type:'number',value:weight,inputMode:'decimal',onChange:function(e){setW(parseFloat(e.target.value)||0)}})),
+h('div',null,h('span',{className:'fl'},'Geschlecht'),h('select',{value:gender,onChange:function(e){setG(e.target.value)}},h('option',{value:'male'},'Männlich'),h('option',{value:'female'},'Weiblich')))
+),
+h('div',{style:{marginTop:'10px'}},
+h('span',{className:'fl'},'Letzte Mahlzeit'),
+h('div',{className:'mr'},
+h('input',{type:'time',value:meal||'',onChange:function(e){setM(e.target.value||null)}}),
+meal&&h('button',{className:'mcl',onClick:function(){setM(null)}},'✕')
+)
+)
+),
+// BAC Display
+drinks.length>0?
+h('div',{className:'bac-d',style:{'--glow':st.col}},
+h('div',{className:'bac-v',style:{color:st.col}},curBAC.toFixed(2),h('span',{className:'bac-u'},'‰')),
+h('div',{className:'badge '+st.c},st.t),
+h('div',{className:'sg'},
+h('div',{className:'sr'},h('span',{className:'sl'},'Nüchtern in'),h('span',{className:'sv',style:{color:curBAC>0?'var(--ac)':'var(--gn)'}},curBAC>0?fmtD(soberH):'Jetzt')),
+peak.bac>0&&h('div',{className:'sr'},h('span',{className:'sl'},'Maximum'),h('span',{className:'sv'},peak.bac.toFixed(2)+'‰'+(resorb&&peak.time?' ('+fmt(peak.time)+')':''))),
+h('div',{className:'sr'},h('span',{className:'sl'},'Phase'),h('span',{className:'sv',style:{color:resorb?'var(--yw)':'var(--gn)'}},resorb?'↑ Anflutung':'↓ Abbau'))
+)
+):
+h('div',{className:'card es'},h('div',{className:'esi'},'🥂'),h('div',{className:'est'},'Getränk hinzufügen, um die BAK zu berechnen')),
+// Drink Buttons
+h('div',{style:{marginBottom:'10px'}},
+h('div',{className:'stl'},'Getränk hinzufügen'),
+h('div',{className:'dg'},
+h('button',{className:'db db-b',onClick:function(){openMo('bier')}},h('span',{className:'de'},'🍺'),' Bier'),
+h('button',{className:'db db-w',onClick:function(){openMo('wein')}},h('span',{className:'de'},'🍷'),' Wein'),
+h('button',{className:'db db-s',onClick:function(){openMo('schnaps')}},h('span',{className:'de'},'🥃'),' Schnaps'),
+h('button',{className:'db db-c',onClick:function(){openMo('custom')}},h('span',{className:'de'},'✚'),' Eigene')
+)
+),
+// Drink List
+drinks.length>0&&h('div',{style:{marginBottom:'10px'}},
+h('div',{className:'dlh'},
+h('span',{className:'stl',style:{marginBottom:0}},'Getränke ('+drinks.length+')'),
+!confR?h('button',{className:'clr',onClick:function(){setCR(true)}},'Alle löschen'):
+h('div',{className:'ic'},h('span',null,'Sicher?'),h('button',{className:'cy',onClick:doReset},'Ja'),h('button',{className:'cn',onClick:function(){setCR(false)}},'Nein'))
+),
+drinks.map(function(d){return h('div',{key:d.id,className:'di'},
+h('div',{style:{flex:1}},h('div',{className:'din'},d.emoji+' '+d.name),h('div',{className:'dim'},fmt(d.time)+' · '+d.alcohol+'% · '+d.amount+' ml')),
+h('button',{className:'del',onClick:function(){remDr(d.id)}},'✕')
+)})
+),
+// Chart
+drinks.length>0&&h('button',{className:'ct',onClick:function(){setSC(!showCh)}},'📊 Verlauf '+(showCh?'▲':'▼')),
+showCh&&drinks.length>0&&h('div',{className:'cc'},h('canvas',{ref:cRef})),
+// Disclaimer
+h('div',{className:'disc'},
+h('strong',null,'Hinweis: '),'Schätzung nach Widmark (r='+(gender==='male'?'0,68':'0,55')+', Abbau 0,15 ‰/h, ρ Ethanol 0,789 g/ml). Tatsächliche BAK variiert individuell. ',
+h('strong',null,'Keine Grundlage für Verkehrsentscheidungen. Im Zweifel: Nicht fahren.')
+),
+// Modal
+showMo&&h('div',{className:'mo',onClick:function(e){if(e.target===e.currentTarget)setSM(false)}},
+h('div',{className:'mc'},
+h('div',{className:'mt'},mType==='custom'?'Eigenes Getränk':(PR[mType]?PR[mType].e+' '+PR[mType].n:'')+ ' hinzufügen'),
+mType==='custom'&&h('div',{className:'cf'},
+h('div',null,h('span',{className:'fl'},'Name'),h('input',{type:'text',value:cNm,placeholder:'z.B. Gin Tonic',onChange:function(e){setCN(e.target.value)}})),
+h('div',null,h('span',{className:'fl'},'Alkohol (Vol%)'),h('input',{type:'number',value:cAl,placeholder:'z.B. 10',step:'0.1',inputMode:'decimal',onChange:function(e){setCA(e.target.value)}})),
+h('div',null,h('span',{className:'fl'},'Menge (ml)'),h('input',{type:'number',value:cAm,placeholder:'z.B. 300',inputMode:'numeric',onChange:function(e){setCM(e.target.value)}}))
+),
+h('div',{className:'tc'},
+h('button',{className:'mb '+(tMode==='now'?'mba':'mbi'),onClick:function(){setTM('now')}},'Jetzt'),
+h('button',{className:'mb '+(tMode==='custom'?'mba':'mbi'),onClick:function(){setTM('custom')}},'Andere Zeit')
+),
+tMode==='custom'&&h('div',{className:'ti'},
+h('input',{type:'date',value:cDate,onChange:function(e){setCD(e.target.value)}}),
+h('input',{type:'time',value:cTime,onChange:function(e){setCT(e.target.value)}})
+),
+mErr&&h('div',{className:'merr'},mErr),
+h('div',{className:'ma'},
+h('button',{className:'mb mbs',onClick:function(){setSM(false)}},'Abbrechen'),
+h('button',{className:'mb mbp',onClick:confDr},'Hinzufügen')
+)
+)
+)
+);
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(h(App));
+</script>
 </body>
 </html>
-```
