@@ -10,78 +10,114 @@
 <meta name="theme-color" content="#000000">
 <title>Promillerechner</title>
 <style>
-:root{--bg:#000;--sf:rgba(28,28,30,.80);--sf2:rgba(44,44,46,.65);--sf3:rgba(58,58,60,.60);--bd:rgba(255,255,255,.08);--tx:#f5f5f7;--txd:rgba(235,235,245,.6);--txm:rgba(235,235,245,.25);--ac:#0a84ff;--acg:rgba(10,132,255,.25);--gn:#30d158;--yw:#ffd60a;--or:#ff9f0a;--rd:#ff453a;--rdd:#ff2d55;--r:18px;--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)}
+:root{--bg:#000;--card:rgba(28,28,30,.72);--card2:rgba(44,44,46,.55);--fill:rgba(120,120,128,.16);--fill2:rgba(120,120,128,.24);--sep:rgba(255,255,255,.06);--tx:#f5f5f7;--tx2:rgba(235,235,245,.6);--tx3:rgba(235,235,245,.3);--ac:#0a84ff;--acg:rgba(10,132,255,.25);--gn:#30d158;--yw:#ffd60a;--or:#ff9f0a;--rd:#ff453a;--rdd:#ff2d55;--pu:#bf5af2;--r:16px;--glass:blur(40px) saturate(180%);--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Helvetica Neue',sans-serif;background:var(--bg);color:var(--tx);-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;font-size:16px;line-height:1.4;overflow-x:hidden;min-height:100vh;-webkit-font-smoothing:antialiased}
-.app{max-width:430px;margin:0 auto;padding:12px;padding-top:calc(var(--st) + 12px);padding-bottom:calc(var(--sb) + 24px)}
-.hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 2px;margin-bottom:14px}
-.hdr h1{font-size:22px;font-weight:700;letter-spacing:-.04em;display:flex;align-items:center;gap:10px}
-.hdr-i{width:30px;height:30px;background:linear-gradient(145deg,#0a84ff,#5e5ce6 50%,#bf5af2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;box-shadow:0 2px 12px rgba(10,132,255,.35),inset 0 0 0 .5px rgba(255,255,255,.1)}
-.btn-s{background:rgba(120,120,128,.16);border:none;color:var(--txd);border-radius:50%;padding:0;font-size:17px;cursor:pointer;width:34px;height:34px;display:flex;align-items:center;justify-content:center;transition:all .2s cubic-bezier(.2,.8,.4,1)}
-.btn-s:active{transform:scale(.85);background:rgba(120,120,128,.32)}
-.card{background:rgba(28,28,30,.72);border:1px solid var(--bd);border-radius:var(--r);padding:16px;margin-bottom:14px;backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%)}
+.app{max-width:430px;margin:0 auto;padding:16px;padding-top:calc(var(--st) + 14px);padding-bottom:calc(var(--sb) + 24px)}
+
+/* ── Header ── */
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:4px 0;margin-bottom:18px}
+.hdr h1{font-size:28px;font-weight:700;letter-spacing:-.04em;display:flex;align-items:center;gap:10px}
+.hdr-i{width:32px;height:32px;background:linear-gradient(140deg,#0a84ff,#5e5ce6 45%,#bf5af2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;box-shadow:0 3px 14px rgba(10,132,255,.35),inset 0 1px 0 rgba(255,255,255,.15)}
+.btn-s{background:var(--fill);border:none;color:var(--tx2);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s cubic-bezier(.2,.8,.4,1)}
+.btn-s svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.btn-s:active{transform:scale(.85);background:var(--fill2)}
+
+/* ── Cards ── */
+.card{background:var(--card);border:1px solid var(--sep);border-radius:var(--r);padding:16px;margin-bottom:14px;backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass)}
 .hidden{display:none!important}
-.bac-d{background:rgba(22,22,24,.85);border:1px solid var(--bd);border-radius:24px;padding:32px 16px 22px;margin-bottom:14px;text-align:center;position:relative;overflow:hidden;backdrop-filter:blur(40px) saturate(200%);-webkit-backdrop-filter:blur(40px) saturate(200%)}
-.bac-d::before{content:'';position:absolute;top:50%;left:50%;width:200px;height:200px;transform:translate(-50%,-60%);background:radial-gradient(circle,var(--glow,transparent) 0%,transparent 70%);opacity:.2;pointer-events:none;filter:blur(30px)}
-.bac-d::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);pointer-events:none}
-.bac-v{font-size:4.2rem;font-weight:800;letter-spacing:-.06em;line-height:1;margin-bottom:12px;font-variant-numeric:tabular-nums;position:relative}
-.bac-u{font-size:.38em;font-weight:500;color:var(--txd);vertical-align:super;margin-left:1px}
+
+/* ── BAC Hero ── */
+.bac-d{background:rgba(18,18,20,.88);border:1px solid var(--sep);border-radius:22px;padding:30px 16px 20px;margin-bottom:16px;text-align:center;position:relative;overflow:hidden;backdrop-filter:blur(50px) saturate(200%);-webkit-backdrop-filter:blur(50px) saturate(200%)}
+.bac-d::before{content:'';position:absolute;top:30%;left:50%;width:260px;height:260px;transform:translate(-50%,-50%);background:radial-gradient(circle,var(--glow,transparent),transparent 65%);opacity:.18;pointer-events:none;filter:blur(40px)}
+.bac-d::after{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);pointer-events:none}
+.bac-v{font-size:4.5rem;font-weight:800;letter-spacing:-.07em;line-height:1;margin-bottom:14px;font-variant-numeric:tabular-nums;position:relative}
+.bac-u{font-size:.35em;font-weight:500;color:var(--tx2);vertical-align:super;margin-left:2px}
 .badge{display:inline-block;padding:5px 18px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
-.st-s{background:rgba(48,209,88,.12);color:var(--gn)}.st-l{background:rgba(255,214,10,.12);color:var(--yw)}.st-i{background:rgba(255,159,10,.12);color:var(--or)}.st-d{background:rgba(255,69,58,.12);color:var(--rd)}.st-h{background:rgba(255,45,85,.15);color:var(--rdd)}
-.sg{margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06)}
-.sr{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:13px}
-.sl{color:var(--txd);font-weight:500}.sv{font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
-.stl{font-size:11px;font-weight:600;color:var(--txm);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
-.dg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.db{background:rgba(28,28,30,.72);border:1px solid var(--bd);color:var(--tx);border-radius:16px;padding:14px 10px;font-size:14px;font-weight:600;cursor:pointer;min-height:52px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s cubic-bezier(.2,.8,.4,1);font-family:inherit;backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);position:relative;overflow:hidden}
-.db::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);pointer-events:none}
-.db:active{transform:scale(.94);background:rgba(58,58,60,.5)}.de{font-size:20px}
-.db-b{border-bottom:2px solid rgba(255,159,10,.30);box-shadow:0 4px 12px -4px rgba(255,159,10,.15)}
-.db-w{border-bottom:2px solid rgba(175,82,222,.30);box-shadow:0 4px 12px -4px rgba(175,82,222,.15)}
-.db-s{border-bottom:2px solid rgba(255,69,58,.30);box-shadow:0 4px 12px -4px rgba(255,69,58,.15)}
-.db-c{border-bottom:2px solid rgba(10,132,255,.30);box-shadow:0 4px 12px -4px rgba(10,132,255,.15)}
+.st-s{background:rgba(48,209,88,.12);color:var(--gn)}
+.st-l{background:rgba(255,214,10,.12);color:var(--yw)}
+.st-i{background:rgba(255,159,10,.12);color:var(--or)}
+.st-d{background:rgba(255,69,58,.12);color:var(--rd)}
+.st-h{background:rgba(255,45,85,.15);color:var(--rdd)}
+.sg{margin-top:20px;padding-top:16px;border-top:1px solid var(--sep)}
+.sr{display:flex;justify-content:space-between;align-items:center;padding:7px 0;font-size:14px}
+.sl{color:var(--tx2);font-weight:500}.sv{font-weight:600;font-variant-numeric:tabular-nums}
+
+/* ── Section Labels ── */
+.stl{font-size:13px;font-weight:600;color:var(--tx2);letter-spacing:-.01em;margin-bottom:12px}
+
+/* ── Drink Buttons ── */
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.db{background:var(--card);border:1px solid var(--sep);color:var(--tx);border-radius:14px;padding:14px 10px;font-size:15px;font-weight:600;cursor:pointer;min-height:54px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s cubic-bezier(.2,.8,.4,1);font-family:inherit;backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);position:relative;overflow:hidden}
+.db::before{content:'';position:absolute;bottom:0;left:20%;right:20%;height:2px;border-radius:2px;opacity:.6;pointer-events:none}
+.db:active{transform:scale(.94);background:var(--card2)}
+.de{font-size:22px;display:flex;align-items:center;justify-content:center}
+.de svg{width:22px;height:22px}
+.db-b::before{background:var(--or)}.db-w::before{background:var(--pu)}.db-s::before{background:var(--rd)}.db-c::before{background:var(--ac)}
+.db-b{box-shadow:0 6px 16px -6px rgba(255,159,10,.18)}.db-w{box-shadow:0 6px 16px -6px rgba(191,90,242,.18)}.db-s{box-shadow:0 6px 16px -6px rgba(255,69,58,.18)}.db-c{box-shadow:0 6px 16px -6px rgba(10,132,255,.18)}
+
+/* ── Drink List ── */
 .dlh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.clr{background:none;border:none;color:var(--rd);font-size:12px;font-weight:600;cursor:pointer;padding:4px 8px;font-family:inherit;opacity:.8}
-.di{background:rgba(28,28,30,.55);border:1px solid var(--bd);border-radius:14px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px)}
-.din{font-weight:600;font-size:14px;letter-spacing:-.01em}.dim{font-size:12px;color:var(--txd);margin-top:3px;font-variant-numeric:tabular-nums}
-.del{background:rgba(255,69,58,.08);border:none;color:var(--rd);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;flex-shrink:0;margin-left:10px;transition:all .2s cubic-bezier(.2,.8,.4,1)}
+.clr{background:none;border:none;color:var(--rd);font-size:13px;font-weight:600;cursor:pointer;padding:4px 8px;font-family:inherit}
+.di{background:var(--card);border:1px solid var(--sep);border-radius:14px;padding:13px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass)}
+.din{font-weight:600;font-size:15px}.dim{font-size:12px;color:var(--tx2);margin-top:3px;font-variant-numeric:tabular-nums}
+.del{background:rgba(255,69,58,.08);border:none;color:var(--rd);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;margin-left:12px;transition:all .2s cubic-bezier(.2,.8,.4,1)}
+.del svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round}
 .del:active{transform:scale(.8);background:rgba(255,69,58,.2)}
-.ct{width:100%;background:rgba(28,28,30,.55);border:1px solid var(--bd);color:var(--ac);border-radius:14px;padding:13px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);transition:all .2s cubic-bezier(.2,.8,.4,1)}
+
+/* ── Chart Toggle ── */
+.ct{width:100%;background:var(--card);border:1px solid var(--sep);color:var(--ac);border-radius:14px;padding:14px;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);transition:all .2s cubic-bezier(.2,.8,.4,1)}
 .ct:active{transform:scale(.97)}
-.cc{height:220px;margin-bottom:14px;background:rgba(22,22,24,.75);border:1px solid var(--bd);border-radius:var(--r);padding:12px;position:relative;touch-action:none;backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px)}
-.sp{animation:sd .3s cubic-bezier(.2,.8,.4,1)}
-@keyframes sd{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Chart ── */
+.cc{height:220px;margin-bottom:14px;background:rgba(18,18,20,.75);border:1px solid var(--sep);border-radius:var(--r);padding:12px;position:relative;touch-action:none;backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px)}
+
+/* ── Animations ── */
+.sp{animation:slideIn .35s cubic-bezier(.2,.8,.4,1)}
+@keyframes slideIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Settings ── */
 .srow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.fl{display:block;font-size:11px;font-weight:600;color:var(--txm);margin-bottom:5px;text-transform:uppercase;letter-spacing:.08em}
-input[type=number],input[type=time],input[type=date],input[type=text],select{width:100%;background:rgba(120,120,128,.16);border:none;color:var(--tx);border-radius:12px;padding:11px 14px;font-size:16px;min-height:44px;outline:none;-webkit-appearance:none;font-family:inherit;transition:all .2s}
-input:focus,select:focus{background:rgba(120,120,128,.24);box-shadow:0 0 0 3px var(--acg)}
+.fl{display:block;font-size:12px;font-weight:600;color:var(--tx2);margin-bottom:6px}
+input[type=number],input[type=time],input[type=date],input[type=text],select{width:100%;background:var(--fill);border:none;color:var(--tx);border-radius:12px;padding:12px 14px;font-size:17px;min-height:44px;outline:none;-webkit-appearance:none;font-family:inherit;transition:all .2s}
+input:focus,select:focus{background:var(--fill2);box-shadow:0 0 0 3px var(--acg)}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ebebf599' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:34px}
-.mo{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;align-items:flex-end;justify-content:center;z-index:100;padding:10px;padding-bottom:calc(var(--sb) + 10px);animation:fi .2s ease}
-@keyframes fi{from{opacity:0}to{opacity:1}}
-.mc{background:rgba(28,28,30,.97);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:24px;width:100%;max-width:400px;max-height:85vh;overflow-y:auto;animation:su .35s cubic-bezier(.2,.8,.4,1);backdrop-filter:blur(60px) saturate(200%);-webkit-backdrop-filter:blur(60px) saturate(200%);box-shadow:0 -8px 40px rgba(0,0,0,.4)}
-@keyframes su{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
-.mc::before{content:'';display:block;width:36px;height:5px;background:rgba(120,120,128,.3);border-radius:100px;margin:0 auto 18px}
-.mt{font-size:18px;font-weight:700;margin-bottom:20px;letter-spacing:-.02em}
-.mb{width:100%;border:none;border-radius:14px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;min-height:48px;transition:all .2s cubic-bezier(.2,.8,.4,1);font-family:inherit}
+
+/* ── Modal (iOS Sheet) ── */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);display:flex;align-items:flex-end;justify-content:center;z-index:100;padding:10px;padding-bottom:calc(var(--sb) + 10px);animation:fadeIn .2s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.mc{background:rgba(28,28,30,.97);border:1px solid rgba(255,255,255,.06);border-radius:22px;padding:24px;width:100%;max-width:400px;max-height:85vh;overflow-y:auto;animation:sheetUp .3s cubic-bezier(.2,.8,.4,1);backdrop-filter:blur(60px) saturate(200%);-webkit-backdrop-filter:blur(60px) saturate(200%);box-shadow:0 -10px 50px rgba(0,0,0,.5)}
+@keyframes sheetUp{from{transform:translateY(50px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mc::before{content:'';display:block;width:36px;height:5px;background:rgba(120,120,128,.35);border-radius:100px;margin:0 auto 20px}
+.mt{font-size:20px;font-weight:700;margin-bottom:22px;letter-spacing:-.03em}
+.mb{width:100%;border:none;border-radius:14px;padding:15px;font-size:16px;font-weight:600;cursor:pointer;min-height:50px;transition:all .2s cubic-bezier(.2,.8,.4,1);font-family:inherit}
 .mb:active{transform:scale(.97)}
-.mbp{background:var(--ac);color:#fff;box-shadow:0 4px 16px rgba(10,132,255,.25)}
-.mbs{background:rgba(120,120,128,.16);border:none;color:var(--tx)}
-.mba{background:var(--ac);color:#fff;box-shadow:0 4px 16px rgba(10,132,255,.25)}
-.mbi{background:rgba(120,120,128,.16);border:none;color:var(--txd)}
-.ma{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
-.cf{background:rgba(120,120,128,.12);border-radius:16px;padding:16px;margin-bottom:16px}.cf>div+div{margin-top:12px}
-.tc{margin-bottom:14px}.tc>button+button{margin-top:8px}
-.ti{margin-top:10px}.ti>input+input{margin-top:8px}
-.merr{color:var(--rd);font-size:12px;font-weight:600;padding:10px 12px;background:rgba(255,69,58,.08);border-radius:12px;margin-top:10px}
-.ic{display:flex;align-items:center;gap:8px;background:rgba(255,69,58,.08);border:1px solid rgba(255,69,58,.15);border-radius:12px;padding:8px 14px}
+.mbp{background:var(--ac);color:#fff;box-shadow:0 4px 20px rgba(10,132,255,.3)}
+.mbs{background:var(--fill);color:var(--tx)}
+.mba{background:var(--ac);color:#fff;box-shadow:0 4px 20px rgba(10,132,255,.3)}
+.mbi{background:var(--fill);color:var(--tx2)}
+.ma{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.cf{background:var(--fill);border-radius:16px;padding:16px;margin-bottom:16px}.cf>div+div{margin-top:14px}
+.tc{margin-bottom:16px}.tc>button+button{margin-top:8px}
+.ti{margin-top:12px}.ti>input+input{margin-top:8px}
+.merr{color:var(--rd);font-size:13px;font-weight:600;padding:12px;background:rgba(255,69,58,.08);border-radius:12px;margin-top:12px}
+.ic{display:flex;align-items:center;gap:8px;background:rgba(255,69,58,.08);border:1px solid rgba(255,69,58,.12);border-radius:12px;padding:10px 14px}
 .ic span{flex:1;font-size:13px;color:var(--rd);font-weight:600}
-.cy,.cn{border:none;border-radius:10px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
-.cy{background:var(--rd);color:#fff}.cn{background:rgba(120,120,128,.2);color:var(--txd)}
+.cy,.cn{border:none;border-radius:10px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.cy{background:var(--rd);color:#fff}.cn{background:var(--fill);color:var(--tx2)}
 .mr{display:flex;gap:8px}.mr input{flex:1}
 .mcl{background:rgba(255,69,58,.08);border:none;color:var(--rd);border-radius:12px;width:44px;min-width:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
-.disc{background:transparent;border:none;padding:12px 4px;font-size:10px;color:var(--txm);line-height:1.6;margin-top:4px}
-.disc strong{color:rgba(235,235,245,.4)}
-.es{text-align:center;padding:40px 24px;color:var(--txm)}.esi{font-size:40px;margin-bottom:12px;opacity:.6}.est{font-size:14px;line-height:1.6;font-weight:500}
+
+/* ── Disclaimer ── */
+.disc{padding:14px 2px;font-size:10px;color:var(--tx3);line-height:1.6;margin-top:4px}
+.disc strong{color:var(--tx2)}
+
+/* ── Empty State ── */
+.es{text-align:center;padding:48px 24px;color:var(--tx3)}
+.esi{font-size:48px;margin-bottom:14px;opacity:.5}
+.est{font-size:15px;line-height:1.6;font-weight:500}
+
+/* ── Watch/Small ── */
 @media(max-width:220px){body{font-size:11px}.app{padding:4px!important}.bac-v{font-size:2.2rem!important}.dg{gap:4px!important}.db{padding:8px 4px!important;font-size:11px!important;min-height:38px!important}.de{font-size:14px!important}.card{padding:8px!important}.badge{font-size:9px!important;padding:3px 8px!important}.sr{font-size:11px!important}.stl{font-size:11px!important}.di{padding:6px!important}.hdr{padding:6px 4px!important}.hdr h1{font-size:14px!important}.mc{padding:10px!important}.mb{min-height:38px!important;padding:8px!important;font-size:12px!important}.cc{height:160px!important}.disc{font-size:8px!important;padding:6px!important}}
 @media(max-width:200px){.bac-v{font-size:1.8rem!important}.dg{gap:3px!important}.db{padding:6px 3px!important;font-size:10px!important;min-height:32px!important}.de{font-size:12px!important}.sr{font-size:10px!important}.card{padding:6px!important;margin-bottom:6px!important}.hdr h1{font-size:12px!important}.disc{display:none}}
 @media(min-width:221px)and(max-width:380px){body{font-size:13px}.bac-v{font-size:3rem!important}.db{min-height:44px!important}}
@@ -91,20 +127,18 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 <div class="app" id="app">
   <div class="hdr">
     <h1><span class="hdr-i">‰</span> Promille</h1>
-    <button class="btn-s" id="btnSettings">⚙</button>
+    <button class="btn-s" id="btnSettings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
   </div>
-
   <div class="card sp hidden" id="settings">
     <div class="srow">
       <div><span class="fl">Gewicht (kg)</span><input type="number" id="inWeight" value="80" inputmode="decimal"></div>
       <div><span class="fl">Geschlecht</span><select id="inGender"><option value="male">Männlich</option><option value="female">Weiblich</option></select></div>
     </div>
-    <div style="margin-top:12px">
-      <span class="fl">Letzte Mahlzeit</span>
-      <div class="mr"><input type="time" id="inMeal" value=""><button class="mcl hidden" id="btnMealClear">✕</button></div>
+    <div class="srow" style="margin-top:12px">
+      <div><span class="fl">Alter</span><input type="number" id="inAge" value="40" inputmode="numeric" min="16" max="99"></div>
+      <div><span class="fl">Letzte Mahlzeit</span><div class="mr"><input type="time" id="inMeal" value=""><button class="mcl hidden" id="btnMealClear">✕</button></div></div>
     </div>
   </div>
-
   <div id="bacDisplay" class="bac-d hidden">
     <div class="bac-v" id="bacValue">0.00<span class="bac-u">‰</span></div>
     <div class="badge" id="bacBadge">Nüchtern</div>
@@ -114,35 +148,24 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       <div class="sr"><span class="sl">Phase</span><span class="sv" id="phaseValue">–</span></div>
     </div>
   </div>
-
-  <div class="card es" id="emptyState">
-    <div class="esi">🥂</div>
-    <div class="est">Getränk hinzufügen, um die BAK zu berechnen</div>
-  </div>
-
+  <div class="card es" id="emptyState"><div class="esi">🍷</div><div class="est">Getränk hinzufügen, um die<br>Blutalkoholkonzentration zu berechnen</div></div>
   <div>
     <div class="stl">Getränk hinzufügen</div>
     <div class="dg">
       <button class="db db-b" data-type="bier"><span class="de">🍺</span> Bier</button>
       <button class="db db-w" data-type="wein"><span class="de">🍷</span> Wein</button>
-      <button class="db db-s" data-type="schnaps"><span class="de">🥃</span> Schnaps</button>
-      <button class="db db-c" data-type="custom"><span class="de">✚</span> Eigene</button>
+      <button class="db db-s" data-type="schnaps"><span class="de"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8l-1.5 13a2 2 0 0 1-2 1.8h-1a2 2 0 0 1-2-1.8L8 2z"/><path d="M9 22h6"/><path d="M12 15.8V22"/><path d="M8 2h8" stroke-width="2.2"/></svg></span> Schnaps</button>
+      <button class="db db-c" data-type="custom"><span class="de">＋</span> Eigene</button>
     </div>
   </div>
-
-  <div id="drinkListSection" class="hidden" style="margin-bottom:12px">
-    <div class="dlh">
-      <span class="stl" style="margin-bottom:0" id="drinkCount">Getränke (0)</span>
-      <div id="clearWrap"><button class="clr" id="btnClearAll">Alle löschen</button></div>
-    </div>
+  <div id="drinkListSection" class="hidden" style="margin-bottom:14px">
+    <div class="dlh"><span class="stl" style="margin-bottom:0" id="drinkCount">Getränke (0)</span><div id="clearWrap"><button class="clr" id="btnClearAll">Alle löschen</button></div></div>
     <div id="drinkList"></div>
   </div>
-
   <button class="ct hidden" id="btnChart">📊 Verlauf ▼</button>
   <div class="cc hidden" id="chartWrap"><canvas id="chartCanvas"></canvas></div>
   <div class="disc" id="disclaimer"></div>
 </div>
-
 <div class="mo hidden" id="modal">
   <div class="mc">
     <div class="mt" id="modalTitle">Getränk hinzufügen</div>
@@ -155,653 +178,205 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       <button class="mb mba" id="btnTimeNow">Jetzt</button>
       <button class="mb mbi" id="btnTimeCustom">Andere Zeit</button>
     </div>
-    <div class="ti hidden" id="timeInputs">
-      <input type="date" id="inDate">
-      <input type="time" id="inTime">
-    </div>
+    <div class="ti hidden" id="timeInputs"><input type="date" id="inDate"><input type="time" id="inTime"></div>
     <div class="merr hidden" id="modalErr"></div>
-    <div class="ma">
-      <button class="mb mbs" id="btnCancel">Abbrechen</button>
-      <button class="mb mbp" id="btnAdd">Hinzufügen</button>
-    </div>
+    <div class="ma"><button class="mb mbs" id="btnCancel">Abbrechen</button><button class="mb mbp" id="btnAdd">Hinzufügen</button></div>
   </div>
 </div>
-
 <script>
 (function(){
 "use strict";
+var S={g:function(k,f){try{var v=localStorage.getItem(k);return v!==null?JSON.parse(v):f}catch(e){return f}},s:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},r:function(k){try{localStorage.removeItem(k)}catch(e){}}};
+var BAC={
+/* Widmark-Reduktionsfaktor mit Alterskorrektur.
+   Basis: 0.68 (Männer), 0.55 (Frauen) — Widmark 1932, Watson 1981.
+   Alter: -0.15% pro Jahr über 25 (weniger Körperwasser im Alter).
+   Quelle: Watson et al., J Stud Alcohol 1981; Seidl et al. 2000 */
+rf:function(g,age){
+var base=g==='male'?0.68:0.55;
+if(!age||age<25)return base;
+var red=Math.min(0.06,(age-25)*0.0015);
+return Math.max(g==='male'?0.60:0.48,base-red);
+},
+/* Abbauraten — Sicherheitswerte (rechtsmedizinischer Mindestabbau).
+   ELIM_RATE: 0.10 ‰/h post-absorptiv (konservativ, Widmark-Minimum).
+   ELIM_RES: 0.08 ‰/h während Resorption (ADH noch nicht voll aktiv).
+   Quelle: Rechtsmedizinische Rückrechnungsstandards, Jones 2010 */
+ELIM_RATE:0.10,ELIM_RES:0.08,ETH_DENSITY:0.789,
+/* Mahlzeit-Parameter. Sicherheitsansatz: KEIN Deficit nüchtern
+   (gesamter Alkohol wird resorbiert = höchste BAK).
+   Mit Mahlzeit: Deficit + längere Resorption → niedrigerer Peak.
+   Resorption nüchtern: 45 min (Gemini/Jones & Jönsson 1994).
+   Quelle: Forrest 1986, Jones 2010 */
+mealParams:function(drinkTime,mealTimeStr){
+if(!mealTimeStr)return{duration:45,deficit:0.0};
+var parts=mealTimeStr.split(':').map(Number);var mealDate=new Date(drinkTime);mealDate.setHours(parts[0],parts[1],0,0);
+if(mealDate>drinkTime)mealDate.setDate(mealDate.getDate()-1);
+var h=(drinkTime-mealDate)/3600000;
+if(h<0.5)return{duration:90,deficit:0.20};if(h<1)return{duration:75,deficit:0.15};if(h<2)return{duration:60,deficit:0.10};if(h<3)return{duration:50,deficit:0.05};if(h<5)return{duration:45,deficit:0.0};return{duration:45,deficit:0.0};
+},
+total:function(drinks,atTime,weight,gender,mealTimeStr,age){
+if(!drinks.length||!weight||weight<=0)return 0;
+var r=this.rf(gender,age),totalResorbed=0,firstDrinkTime=null,lastResEnd=0;
+for(var i=0;i<drinks.length;i++){var d=drinks[i];var tMin=(atTime-d.time)/60000;if(tMin<0)continue;
+if(firstDrinkTime===null||d.time<firstDrinkTime)firstDrinkTime=d.time;
+var mp=this.mealParams(d.time,mealTimeStr);var gramsAlcohol=d.amount*(d.alcohol/100)*this.ETH_DENSITY;
+var absorbedGrams=gramsAlcohol*(1-mp.deficit);var cMax=absorbedGrams/(weight*r);
+var resFrac=1-Math.exp(-3*tMin/mp.duration);totalResorbed+=cMax*resFrac;
+var re=d.time.getTime()+mp.duration*60000;if(re>lastResEnd)lastResEnd=re}
+if(firstDrinkTime===null)return 0;
+var atMs=atTime.getTime(),fMs=firstDrinkTime.getTime();
+if(atMs>=lastResEnd){var resH=(lastResEnd-fMs)/3600000;var postH=(atMs-lastResEnd)/3600000;
+return Math.max(0,totalResorbed-this.ELIM_RES*resH-this.ELIM_RATE*postH)}
+return Math.max(0,totalResorbed-this.ELIM_RES*((atMs-fMs)/3600000));
+},
+firstTime:function(ds){var ft=ds[0].time;for(var i=1;i<ds.length;i++)if(ds[i].time<ft)ft=ds[i].time;return ft},
+lastTime:function(ds){var lt=ds[0].time;for(var i=1;i<ds.length;i++)if(ds[i].time>lt)lt=ds[i].time;return lt},
+peak:function(ds,w,g,ml,age){
+if(!ds.length)return{time:null,bac:0};var ft=this.firstTime(ds).getTime(),mx=0,pt=new Date(ft);
+var end=this.lastTime(ds).getTime()+86400000;
+for(var t=ft;t<=end;t+=60000){var tm=new Date(t),b=this.total(ds,tm,w,g,ml,age);if(b>mx){mx=b;pt=tm}if(mx>0.01&&b<=0)break}
+return{time:pt,bac:mx};
+},
+soberIn:function(ds,w,g,ml,age){
+var n=Date.now(),lastPositive=-1,peakFound=0;
+for(var m=0;m<=2880;m+=2){var val=this.total(ds,new Date(n+m*60000),w,g,ml,age);
+if(val>0.005){lastPositive=m;if(val>peakFound)peakFound=val}
+if(peakFound>0.01&&val<=0.005&&m>lastPositive+10)break}
+if(lastPositive<0){if(this.total(ds,new Date(n),w,g,ml,age)>0.005)return 0.03;
+for(var m2=1;m2<=180;m2++){if(this.total(ds,new Date(n+m2*60000),w,g,ml,age)>0.005){
+for(var m3=m2;m3<=2880;m3+=2){var v2=this.total(ds,new Date(n+m3*60000),w,g,ml,age);if(v2>0.005)lastPositive=m3;else if(lastPositive>0)break}break}}}
+return lastPositive>0?(lastPositive+2)/60:0;
+}};
 
-/* =========================================================
-   STORAGE (Watch-safe localStorage wrapper)
-   ========================================================= */
-var S={
-  g:function(k,f){try{var v=localStorage.getItem(k);return v!==null?JSON.parse(v):f}catch(e){return f}},
-  s:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},
-  r:function(k){try{localStorage.removeItem(k)}catch(e){}}
-};
+function fmt(d){return d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})}
+function fmtD(h){var hh=Math.floor(h),mm=Math.round((h%1)*60);return hh===0?mm+' min':hh+'h '+mm+'min'}
+function nowT(){return new Date().toTimeString().slice(0,5)}
+function nowD(){return new Date().toISOString().slice(0,10)}
+function getSt(b){
+if(b<0.005)return{c:'st-s',t:'Nüchtern',col:'var(--gn)'};if(b<0.3)return{c:'st-l',t:'Leicht',col:'var(--yw)'};
+if(b<0.5)return{c:'st-i',t:'Fahruntüchtig',col:'var(--or)'};if(b<1.1)return{c:'st-d',t:'Erheblich',col:'var(--rd)'};
+return{c:'st-h',t:'Stark alkoholisiert',col:'var(--rdd)'};}
+var PR={bier:{n:'Bier',e:'🍺',a:5,m:500},wein:{n:'Wein',e:'🍷',a:12,m:200},schnaps:{n:'Schnaps',e:'🍸',a:40,m:40}};
+var weight=S.g('pw',80),gender=S.g('pg','male'),meal=S.g('pm',null),age=S.g('pa',40);
+var drinks=(S.g('pd',[])).map(function(d){return{id:d.id,name:d.name,emoji:d.emoji,alcohol:d.alcohol,amount:d.amount,time:new Date(d.time)}});
+var showSettings=false,showChart=false,confirmingReset=false,modalType=null,timeMode='now',activeTouchX=null;
+var $=function(id){return document.getElementById(id)};
+function save(){S.s('pw',weight);S.s('pg',gender);S.s('pa',age);meal?S.s('pm',meal):S.r('pm');
+S.s('pd',drinks.map(function(d){return{id:d.id,name:d.name,emoji:d.emoji,alcohol:d.alcohol,amount:d.amount,time:d.time.toISOString()}}));}
 
-/* =========================================================
-   BAK-BERECHNUNG – Wissenschaftlich fundierte Widmark-Formel
-   
-   Korrektes 2-Phasen-Modell pro Getränk:
-   
-   Phase 1 (Anflutung, 0 ≤ t ≤ T_res):
-     Lineare Resorption. BAK steigt, weil Resorptionsrate >
-     Abbaurate. Der Körper baut gleichzeitig ab (Nullordnung,
-     0.15 ‰/h), aber nur vom bereits resorbierten Anteil.
-     
-   Phase 2 (Elimination, t > T_res):
-     Resorption abgeschlossen. BAK fällt linear mit 0.15 ‰/h.
-   
-   Quellen:
-   - Widmark (1932): Grundformel C = A / (m × r)
-   - Watson et al. (1981): Bestätigung r-Faktoren
-   - Jones & Jönsson (1994): Resorptionsdauer 20-120 min
-   - Forrest (1986): Resorptionsdefizit 10-30%
-   - Jones (2010): Abbaurate 0.10-0.20 ‰/h, Mittel 0.15
-   ========================================================= */
-var BAC = {
-  /* Widmark-Reduktionsfaktor */
-  rf: function(g) { return g === 'male' ? 0.68 : 0.55; },
+function render(){
+var now=new Date(),cur=BAC.total(drinks,now,weight,gender,meal,age),pk=BAC.peak(drinks,weight,gender,meal,age),sh=BAC.soberIn(drinks,weight,gender,meal,age),st=getSt(cur),resorb=pk.time&&now<pk.time;
+if(drinks.length>0){
+$('bacDisplay').classList.remove('hidden');$('emptyState').classList.add('hidden');
+$('bacDisplay').style.setProperty('--glow',st.col);
+$('bacValue').innerHTML=cur.toFixed(2)+'<span class="bac-u">‰</span>';$('bacValue').style.color=st.col;
+$('bacBadge').className='badge '+st.c;$('bacBadge').textContent=st.t;
+$('soberTime').textContent=sh>0.03?fmtD(sh):'Jetzt';$('soberTime').style.color=sh>0.03?'var(--ac)':'var(--gn)';
+if(pk.bac>0){$('peakRow').classList.remove('hidden');$('peakValue').textContent=pk.bac.toFixed(2)+'‰'+(resorb&&pk.time?' ('+fmt(pk.time)+')':'');}
+else $('peakRow').classList.add('hidden');
+$('phaseValue').textContent=resorb?'↑ Anflutung':'↓ Abbau';$('phaseValue').style.color=resorb?'var(--yw)':'var(--gn)';
+}else{$('bacDisplay').classList.add('hidden');$('emptyState').classList.remove('hidden')}
+$('settings').classList.toggle('hidden',!showSettings);$('inWeight').value=weight;$('inGender').value=gender;$('inAge').value=age;$('inMeal').value=meal||'';$('btnMealClear').classList.toggle('hidden',!meal);
+if(drinks.length>0){
+$('drinkListSection').classList.remove('hidden');$('btnChart').classList.remove('hidden');$('drinkCount').textContent='Getränke ('+drinks.length+')';
+var cw=$('clearWrap');
+if(confirmingReset){cw.innerHTML='<div class="ic"><span>Sicher?</span><button class="cy" id="cfY">Ja</button><button class="cn" id="cfN">Nein</button></div>';
+$('cfY').onclick=function(){drinks=[];meal=null;confirmingReset=false;save();render()};$('cfN').onclick=function(){confirmingReset=false;render()}}
+else{cw.innerHTML='<button class="clr" id="bcl">Alle löschen</button>';$('bcl').onclick=function(){confirmingReset=true;render()}}
+var html='';for(var i=0;i<drinks.length;i++){var d=drinks[i];
+html+='<div class="di"><div style="flex:1"><div class="din">'+d.emoji+' '+d.name+'</div>';
+html+='<div class="dim">'+fmt(d.time)+' · '+d.alcohol+'% · '+d.amount+' ml</div></div>';
+html+='<button class="del" data-did="'+d.id+'"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>'}
+$('drinkList').innerHTML=html;
+$('drinkList').querySelectorAll('.del').forEach(function(b){b.onclick=function(){var id=parseFloat(this.getAttribute('data-did'));drinks=drinks.filter(function(d){return d.id!==id});save();render()}});
+}else{$('drinkListSection').classList.add('hidden');$('btnChart').classList.add('hidden');$('chartWrap').classList.add('hidden');showChart=false}
+var rv=BAC.rf(gender,age).toFixed(2).replace('.',','),defInfo=meal?'mit Mahlzeit-Korrektur':'nüchtern';
+$('disclaimer').innerHTML='<strong>Sicherheitsrechner:</strong> Widmark-Formel (r='+rv+', Alter '+age+', Abbau '+BAC.ELIM_RES.toFixed(2).replace('.',',')+'/'+BAC.ELIM_RATE.toFixed(2).replace('.',',')+' ‰/h, ρ=0,789, '+defInfo+'). Konservative Werte — zeigt eher zu viel als zu wenig an. <strong>Keine Grundlage für Verkehrsentscheidungen. Im Zweifel: Nicht fahren.</strong>';
+if(showChart&&drinks.length>0)drawChart()}
 
-  /* Abbaurate in ‰ pro Stunde (Nullordnung-Kinetik) */
-  ELIM_RATE: 0.15,
+function drawChart(){
+$('chartWrap').classList.remove('hidden');
+var canvas=$('chartCanvas'),ctx=canvas.getContext('2d');
+var rect=$('chartWrap').getBoundingClientRect(),w=rect.width-24,ht=rect.height-24;
+var dpr=window.devicePixelRatio||1;canvas.width=w*dpr;canvas.height=ht*dpr;
+canvas.style.width=w+'px';canvas.style.height=ht+'px';ctx.scale(dpr,dpr);
+var nowMs=Date.now(),ft=BAC.firstTime(drinks).getTime();
+var sh=BAC.soberIn(drinks,weight,gender,meal,age);
+/* FIX: Ensure chart always covers enough time even for freshly added drinks */
+var pk=BAC.peak(drinks,weight,gender,meal,age);
+var peakMs=pk.time?pk.time.getTime():nowMs;
+var endMs=Math.max(nowMs+sh*3600000+3600000,peakMs+3600000,ft+7200000);
+var step=Math.max(60000,Math.min(180000,(endMs-ft)/200));
+var pts=[],maxB=0;
+for(var t=ft-300000;t<=endMs;t+=step){var tm=new Date(t),b=BAC.total(drinks,tm,weight,gender,meal,age);
+pts.push({t:tm,b:b});if(b>maxB)maxB=b;
+if(maxB>0.01&&b<=0&&t>peakMs)break}
+if(pts.length<2||maxB<0.001)return;
+var pL=32,pR=10,pT=22,pB=22,cw=w-pL-pR,ch=ht-pT-pB;
+var tMin=pts[0].t.getTime(),tMax=pts[pts.length-1].t.getTime();
+if(tMax<=tMin)return;
+var yMax=Math.ceil(maxB*5)/5+0.1;
+function tx(tm){return pL+((tm.getTime()-tMin)/(tMax-tMin))*cw}
+function ty(b){return pT+ch-(b/yMax)*ch}
+ctx.clearRect(0,0,w,ht);
+ctx.strokeStyle='rgba(255,255,255,.06)';ctx.lineWidth=0.5;
+var ys=Math.ceil(yMax/0.2);
+for(var i=0;i<=ys;i++){var yv=i*0.2,y=ty(yv);ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(w-pR,y);ctx.stroke();
+ctx.fillStyle='rgba(235,235,245,.4)';ctx.font='500 10px -apple-system,sans-serif';ctx.textAlign='right';ctx.fillText(yv.toFixed(1),pL-6,y+3)}
+ctx.fillStyle='rgba(235,235,245,.35)';ctx.font='500 9px -apple-system,sans-serif';ctx.textAlign='center';
+var ls=Math.max(1,Math.floor(pts.length/5));for(var i=0;i<pts.length;i+=ls)ctx.fillText(fmt(pts[i].t),tx(pts[i].t),ht-4);
+var grad=ctx.createLinearGradient(0,pT,0,ht-pB);grad.addColorStop(0,'rgba(10,132,255,.25)');grad.addColorStop(1,'rgba(10,132,255,.02)');
+ctx.beginPath();ctx.moveTo(tx(pts[0].t),ty(0));for(var i=0;i<pts.length;i++)ctx.lineTo(tx(pts[i].t),ty(pts[i].b));
+ctx.lineTo(tx(pts[pts.length-1].t),ty(0));ctx.closePath();ctx.fillStyle=grad;ctx.fill();
+ctx.beginPath();ctx.moveTo(tx(pts[0].t),ty(pts[0].b));for(var i=1;i<pts.length;i++)ctx.lineTo(tx(pts[i].t),ty(pts[i].b));
+ctx.strokeStyle='#0a84ff';ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.lineCap='round';ctx.stroke();
+if(yMax>=0.5){var y5=ty(0.5);ctx.beginPath();ctx.setLineDash([5,4]);ctx.moveTo(pL,y5);ctx.lineTo(w-pR,y5);
+ctx.strokeStyle='rgba(255,69,58,.5)';ctx.lineWidth=1;ctx.stroke();ctx.setLineDash([]);
+ctx.fillStyle='rgba(255,69,58,.8)';ctx.font='600 9px -apple-system,sans-serif';ctx.textAlign='left';ctx.fillText('0,5‰',pL+3,y5-5)}
+if(activeTouchX!==null){var x=Math.max(pL,Math.min(w-pR,activeTouchX)),ratio=(x-pL)/cw;
+var timeSel=tMin+ratio*(tMax-tMin),dateSel=new Date(timeSel),valSel=BAC.total(drinks,dateSel,weight,gender,meal,age);
+ctx.beginPath();ctx.moveTo(x,pT);ctx.lineTo(x,ht-pB);ctx.strokeStyle='rgba(255,255,255,.3)';ctx.lineWidth=1;ctx.stroke();
+ctx.beginPath();ctx.arc(x,ty(valSel),5,0,Math.PI*2);ctx.fillStyle='#0a84ff';ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+var txt=fmt(dateSel)+'  '+valSel.toFixed(2)+'‰';ctx.font='600 11px -apple-system,sans-serif';var tm=ctx.measureText(txt);
+var bx=x-tm.width/2-8,by=pT-16;if(bx<0)bx=0;if(bx+tm.width+16>w)bx=w-tm.width-16;
+ctx.fillStyle='rgba(28,28,30,.95)';var bw=tm.width+16,bh=22,br=8;
+ctx.beginPath();ctx.moveTo(bx+br,by);ctx.lineTo(bx+bw-br,by);ctx.quadraticCurveTo(bx+bw,by,bx+bw,by+br);ctx.lineTo(bx+bw,by+bh-br);ctx.quadraticCurveTo(bx+bw,by+bh,bx+bw-br,by+bh);ctx.lineTo(bx+br,by+bh);ctx.quadraticCurveTo(bx,by+bh,bx,by+bh-br);ctx.lineTo(bx,by+br);ctx.quadraticCurveTo(bx,by,bx+br,by);ctx.fill();
+ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=0.5;ctx.stroke();ctx.fillStyle='#fff';ctx.textAlign='left';ctx.fillText(txt,bx+8,by+15);
+}else{var nx=tx(new Date(nowMs));if(nx>=pL&&nx<=w-pR){var curVal=BAC.total(drinks,new Date(nowMs),weight,gender,meal,age);
+ctx.beginPath();ctx.arc(nx,ty(curVal),4,0,Math.PI*2);ctx.fillStyle='#0a84ff';ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke()}}}
 
-  /* Ethanol-Dichte g/ml */
-  ETH_DENSITY: 0.789,
-
-  /*
-   * Mahlzeit-Parameter:
-   * - duration: Resorptionsdauer in Minuten
-   * - deficit: Resorptionsdefizit (0-1), First-Pass-Metabolismus
-   *
-   * Zeitabstand Mahlzeit→Getränk bestimmt die Magenentleerung.
-   * Quelle: Jones & Jönsson (1994), Horowitz et al. (1989)
-   */
-  mealParams: function(drinkTime, mealTimeStr) {
-    if (!mealTimeStr) {
-      return { duration: 25, deficit: 0.10 };
-    }
-    var parts = mealTimeStr.split(':').map(Number);
-    var mealDate = new Date(drinkTime);
-    mealDate.setHours(parts[0], parts[1], 0, 0);
-    if (mealDate > drinkTime) mealDate.setDate(mealDate.getDate() - 1);
-
-    var h = (drinkTime - mealDate) / 3600000;
-
-    if (h < 0.5) return { duration: 120, deficit: 0.25 };
-    if (h < 1)   return { duration: 90,  deficit: 0.20 };
-    if (h < 2)   return { duration: 60,  deficit: 0.15 };
-    if (h < 3)   return { duration: 45,  deficit: 0.12 };
-    if (h < 5)   return { duration: 35,  deficit: 0.10 };
-    return { duration: 25, deficit: 0.10 };
-  },
-
-  /*
-   * BAK-Beitrag eines einzelnen Getränks zum Zeitpunkt `at`.
-   *
-   * Korrekte Berechnung mit 2 Phasen:
-   *
-   * C_max = absorbedGrams / (weight × r)
-   * T = Resorptionsdauer in Stunden
-   * β = Abbaurate (0.15 ‰/h)
-   * t = Zeit seit Trinkbeginn in Stunden
-   *
-   * Phase 1 (t ≤ T): Resorption + gleichzeitiger Abbau
-   *   Resorptionsrate = C_max / T  (‰ pro Stunde)
-   *   BAK(t) = (C_max / T) × t - β × t
-   *          = (C_max / T - β) × t
-   *   (Resorptionsrate ist typischerweise >> β, also steigt BAK)
-   *
-   * Phase 2 (t > T): Nur Abbau
-   *   BAK_at_T = (C_max / T - β) × T = C_max - β × T
-   *   BAK(t) = BAK_at_T - β × (t - T)
-   *          = C_max - β × t
-   *
-   * Vereinfacht: Nach abgeschlossener Resorption ist
-   *   BAK(t) = C_max - β × t
-   * Das ist die klassische Widmark-Rückrechnung.
-   */
-  drinkBAC: function(drink, atTime, weight, gender, mealTimeStr) {
-    if (!weight || weight <= 0) return 0;
-
-    var tMin = (atTime - drink.time) / 60000; /* Minuten seit Getränk */
-    if (tMin < 0) return 0;
-
-    var r = this.rf(gender);
-    var mp = this.mealParams(drink.time, mealTimeStr);
-
-    var gramsAlcohol = drink.amount * (drink.alcohol / 100) * this.ETH_DENSITY;
-    var absorbedGrams = gramsAlcohol * (1 - mp.deficit);
-    var cMax = absorbedGrams / (weight * r);
-
-    var tHours = tMin / 60;
-    var T = mp.duration / 60; /* Resorptionsdauer in Stunden */
-
-    var bac;
-    if (tMin <= mp.duration) {
-      /* Phase 1: Anflutung – lineare Resorption minus laufender Abbau */
-      var resorptionRate = cMax / T; /* ‰ pro Stunde */
-      bac = (resorptionRate - this.ELIM_RATE) * tHours;
-      /* Falls Abbaurate > Resorptionsrate (extrem langsame Resorption
-         bei kleinen Getränken), clamp auf resorbierten Anteil */
-      if (bac < 0) bac = 0;
-    } else {
-      /* Phase 2: Elimination – Resorption komplett, nur Abbau */
-      bac = cMax - this.ELIM_RATE * tHours;
-    }
-
-    return Math.max(0, bac);
-  },
-
-  /*
-   * GESAMT-BAK zum Zeitpunkt `at`.
-   *
-   * Summierung der individuellen Getränke-Beiträge.
-   * ABER: Der Abbau läuft nur einmal (nicht pro Getränk),
-   * weil der Körper nur eine Alkoholdehydrogenase hat.
-   *
-   * Korrektes Modell:
-   * 1. Summiere alle resorbierten BAK-Anteile (ohne Abbau)
-   * 2. Ziehe den Abbau einmal global ab (ab erstem Getränk)
-   *
-   * BAK(t) = Σ resorbed_i(t) - β × (t - t_first)
-   */
-  total: function(drinks, atTime, weight, gender, mealTimeStr) {
-    if (!drinks.length || !weight || weight <= 0) return 0;
-
-    var r = this.rf(gender);
-    var totalResorbed = 0;
-    var firstDrinkTime = null;
-
-    for (var i = 0; i < drinks.length; i++) {
-      var d = drinks[i];
-      var tMin = (atTime - d.time) / 60000;
-      if (tMin < 0) continue;
-
-      if (firstDrinkTime === null || d.time < firstDrinkTime) {
-        firstDrinkTime = d.time;
-      }
-
-      var mp = this.mealParams(d.time, mealTimeStr);
-      var gramsAlcohol = d.amount * (d.alcohol / 100) * this.ETH_DENSITY;
-      var absorbedGrams = gramsAlcohol * (1 - mp.deficit);
-      var cMax = absorbedGrams / (weight * r);
-
-      /* Nur Resorption, OHNE Abbau */
-      var resFrac = tMin >= mp.duration ? 1.0 : tMin / mp.duration;
-      totalResorbed += cMax * resFrac;
-    }
-
-    if (firstDrinkTime === null) return 0;
-
-    /* Globaler Abbau: β × Stunden seit erstem Getränk.
-     * ABER: In den ersten Minuten wird noch kaum Alkohol
-     * resorbiert, daher kann der Abbau nicht mehr sein als
-     * das, was bisher resorbiert wurde. Wir clampen einfach
-     * auf max 0 (Math.max am Ende). */
-    var hoursSinceFirst = Math.max(0, (atTime - firstDrinkTime) / 3600000);
-    var totalEliminated = this.ELIM_RATE * hoursSinceFirst;
-
-    return Math.max(0, totalResorbed - totalEliminated);
-  },
-
-  /* Ersten Trinkzeitpunkt */
-  firstTime: function(ds) {
-    var ft = ds[0].time;
-    for (var i = 1; i < ds.length; i++) {
-      if (ds[i].time < ft) ft = ds[i].time;
-    }
-    return ft;
-  },
-
-  /* Letzten Trinkzeitpunkt */
-  lastTime: function(ds) {
-    var lt = ds[0].time;
-    for (var i = 1; i < ds.length; i++) {
-      if (ds[i].time > lt) lt = ds[i].time;
-    }
-    return lt;
-  },
-
-  /* Peak-BAK und Zeitpunkt (scannt ab erstem Getränk) */
-  peak: function(ds, w, g, ml) {
-    if (!ds.length) return { time: null, bac: 0 };
-    var ft = this.firstTime(ds).getTime();
-    var mx = 0, pt = new Date(ft);
-    /* Scan bis 24h nach letztem Getränk */
-    var end = this.lastTime(ds).getTime() + 86400000;
-    for (var t = ft; t <= end; t += 60000) {
-      var tm = new Date(t);
-      var b = this.total(ds, tm, w, g, ml);
-      if (b > mx) { mx = b; pt = tm; }
-      /* Stop wenn nach Peak wieder bei 0 */
-      if (mx > 0 && b <= 0) break;
-    }
-    return { time: pt, bac: mx };
-  },
-
-  /*
-   * Zeit bis nüchtern (in Stunden ab jetzt).
-   *
-   * WICHTIG: Scannt die GESAMTE Zukunftskurve.
-   * Findet den letzten Zeitpunkt mit BAK > 0 und gibt die
-   * Differenz zu jetzt zurück. Berücksichtigt also auch
-   * Getränke, deren Resorption noch nicht abgeschlossen ist.
-   */
-  soberIn: function(ds, w, g, ml) {
-    var n = Date.now();
-    /* Scanne ab jetzt bis 24h in die Zukunft */
-    var lastPositive = -1;
-    var peakFound = 0;
-    for (var m = 0; m <= 1440; m += 2) {
-      var val = this.total(ds, new Date(n + m * 60000), w, g, ml);
-      if (val > 0.005) {
-        lastPositive = m;
-        if (val > peakFound) peakFound = val;
-      }
-      /* Optimierung: Wenn Peak gefunden und jetzt bei 0 → fertig */
-      if (peakFound > 0 && val <= 0.005 && m > lastPositive + 10) break;
-    }
-    if (lastPositive < 0) {
-      /* Prüfe ob JETZT noch > 0 (edge case) */
-      if (this.total(ds, new Date(n), w, g, ml) > 0.005) return 0.03;
-      /* Prüfe ob in naher Zukunft > 0 (gerade erst getrunken) */
-      for (var m2 = 1; m2 <= 180; m2++) {
-        if (this.total(ds, new Date(n + m2 * 60000), w, g, ml) > 0.005) {
-          /* Finde dann den letzten positiven Punkt */
-          for (var m3 = m2; m3 <= 1440; m3 += 2) {
-            var v2 = this.total(ds, new Date(n + m3 * 60000), w, g, ml);
-            if (v2 > 0.005) lastPositive = m3;
-            else if (lastPositive > 0) break;
-          }
-          break;
-        }
-      }
-    }
-    return lastPositive > 0 ? (lastPositive + 2) / 60 : 0;
-  }
-};
-
-/* =========================================================
-   HELPERS
-   ========================================================= */
-function fmt(d) { return d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }); }
-function fmtD(h) {
-  var hh = Math.floor(h), mm = Math.round((h % 1) * 60);
-  return hh === 0 ? mm + ' min' : hh + 'h ' + mm + 'min';
-}
-function nowT() { return new Date().toTimeString().slice(0, 5); }
-function nowD() { return new Date().toISOString().slice(0, 10); }
-function getSt(b) {
-  if (b < 0.005) return { c: 'st-s', t: 'Nüchtern', col: 'var(--gn)' };
-  if (b < 0.3)   return { c: 'st-l', t: 'Leicht', col: 'var(--yw)' };
-  if (b < 0.5)   return { c: 'st-i', t: 'Fahruntüchtig', col: 'var(--or)' };
-  if (b < 1.1)   return { c: 'st-d', t: 'Erheblich', col: 'var(--rd)' };
-  return { c: 'st-h', t: 'Stark alkoholisiert', col: 'var(--rdd)' };
-}
-var PR = {
-  bier:    { n: 'Bier',    e: '🍺', a: 5,  m: 500 },
-  wein:    { n: 'Wein',    e: '🍷', a: 12, m: 200 },
-  schnaps: { n: 'Schnaps', e: '🥃', a: 40, m: 40  }
-};
-
-/* =========================================================
-   STATE
-   ========================================================= */
-var weight = S.g('pw', 80);
-var gender = S.g('pg', 'male');
-var meal = S.g('pm', null);
-var drinks = (S.g('pd', [])).map(function(d) {
-  return { id: d.id, name: d.name, emoji: d.emoji, alcohol: d.alcohol, amount: d.amount, time: new Date(d.time) };
-});
-var showSettings = false, showChart = false, confirmingReset = false;
-var modalType = null, timeMode = 'now', activeTouchX = null;
-
-/* DOM helper */
-var $ = function(id) { return document.getElementById(id); };
-
-function save() {
-  S.s('pw', weight); S.s('pg', gender);
-  meal ? S.s('pm', meal) : S.r('pm');
-  S.s('pd', drinks.map(function(d) {
-    return { id: d.id, name: d.name, emoji: d.emoji, alcohol: d.alcohol, amount: d.amount, time: d.time.toISOString() };
-  }));
-}
-
-/* =========================================================
-   RENDER
-   ========================================================= */
-function render() {
-  var now = new Date();
-  var cur = BAC.total(drinks, now, weight, gender, meal);
-  var pk = BAC.peak(drinks, weight, gender, meal);
-  var sh = BAC.soberIn(drinks, weight, gender, meal);
-  var st = getSt(cur);
-  var resorb = pk.time && now < pk.time;
-
-  if (drinks.length > 0) {
-    $('bacDisplay').classList.remove('hidden');
-    $('emptyState').classList.add('hidden');
-    $('bacDisplay').style.setProperty('--glow', st.col);
-    $('bacValue').innerHTML = cur.toFixed(2) + '<span class="bac-u">‰</span>';
-    $('bacValue').style.color = st.col;
-    $('bacBadge').className = 'badge ' + st.c;
-    $('bacBadge').textContent = st.t;
-    $('soberTime').textContent = sh > 0.03 ? fmtD(sh) : 'Jetzt';
-    $('soberTime').style.color = sh > 0.03 ? 'var(--ac)' : 'var(--gn)';
-    if (pk.bac > 0) {
-      $('peakRow').classList.remove('hidden');
-      $('peakValue').textContent = pk.bac.toFixed(2) + '‰' + (resorb && pk.time ? ' (' + fmt(pk.time) + ')' : '');
-    } else {
-      $('peakRow').classList.add('hidden');
-    }
-    $('phaseValue').textContent = resorb ? '↑ Anflutung' : '↓ Abbau';
-    $('phaseValue').style.color = resorb ? 'var(--yw)' : 'var(--gn)';
-  } else {
-    $('bacDisplay').classList.add('hidden');
-    $('emptyState').classList.remove('hidden');
-  }
-
-  /* Settings */
-  $('settings').classList.toggle('hidden', !showSettings);
-  $('inWeight').value = weight;
-  $('inGender').value = gender;
-  $('inMeal').value = meal || '';
-  $('btnMealClear').classList.toggle('hidden', !meal);
-
-  /* Drink List */
-  if (drinks.length > 0) {
-    $('drinkListSection').classList.remove('hidden');
-    $('btnChart').classList.remove('hidden');
-    $('drinkCount').textContent = 'Getränke (' + drinks.length + ')';
-    var cw = $('clearWrap');
-    if (confirmingReset) {
-      cw.innerHTML = '<div class="ic"><span>Sicher?</span><button class="cy" id="cfY">Ja</button><button class="cn" id="cfN">Nein</button></div>';
-      $('cfY').onclick = function() { drinks = []; meal = null; confirmingReset = false; save(); render(); };
-      $('cfN').onclick = function() { confirmingReset = false; render(); };
-    } else {
-      cw.innerHTML = '<button class="clr" id="bcl">Alle löschen</button>';
-      $('bcl').onclick = function() { confirmingReset = true; render(); };
-    }
-    var html = '';
-    for (var i = 0; i < drinks.length; i++) {
-      var d = drinks[i];
-      html += '<div class="di"><div style="flex:1"><div class="din">' + d.emoji + ' ' + d.name + '</div>';
-      html += '<div class="dim">' + fmt(d.time) + ' · ' + d.alcohol + '% · ' + d.amount + ' ml</div></div>';
-      html += '<button class="del" data-did="' + d.id + '">✕</button></div>';
-    }
-    $('drinkList').innerHTML = html;
-    $('drinkList').querySelectorAll('.del').forEach(function(b) {
-      b.onclick = function() {
-        var id = parseFloat(this.getAttribute('data-did'));
-        drinks = drinks.filter(function(d) { return d.id !== id; });
-        save(); render();
-      };
-    });
-  } else {
-    $('drinkListSection').classList.add('hidden');
-    $('btnChart').classList.add('hidden');
-    $('chartWrap').classList.add('hidden');
-    showChart = false;
-  }
-
-  /* Disclaimer */
-  var rv = gender === 'male' ? '0,68' : '0,55';
-  var defInfo = meal ? 'mit Mahlzeit-Korrektur' : 'nüchtern';
-  $('disclaimer').innerHTML = '<strong>Hinweis:</strong> Widmark-Formel (r=' + rv + ', Abbau ' + BAC.ELIM_RATE.toFixed(2).replace('.', ',') + ' ‰/h, ρ=0,789 g/ml, ' + defInfo + '). Lineare Resorption, globaler Abbau ab erstem Getränk. Individuelle Abweichungen möglich. <strong>Keine Grundlage für Verkehrsentscheidungen. Im Zweifel: Nicht fahren.</strong>';
-
-  if (showChart && drinks.length > 0) drawChart();
-}
-
-/* =========================================================
-   CHART (Canvas, Touch-Interaktion)
-   ========================================================= */
-function drawChart() {
-  $('chartWrap').classList.remove('hidden');
-  var canvas = $('chartCanvas'), ctx = canvas.getContext('2d');
-  var rect = $('chartWrap').getBoundingClientRect();
-  var w = rect.width - 24, ht = rect.height - 24;
-  var dpr = window.devicePixelRatio || 1;
-  canvas.width = w * dpr; canvas.height = ht * dpr;
-  canvas.style.width = w + 'px'; canvas.style.height = ht + 'px';
-  ctx.scale(dpr, dpr);
-
-  var nowMs = Date.now(), ft = BAC.firstTime(drinks).getTime();
-  var sh = BAC.soberIn(drinks, weight, gender, meal);
-  var endMs = nowMs + sh * 3600000 + 3600000;
-  var step = Math.max(180000, (endMs - ft) / 150);
-  var pts = [], maxB = 0;
-  for (var t = ft - 600000; t <= endMs; t += step) {
-    var tm = new Date(t), b = BAC.total(drinks, tm, weight, gender, meal);
-    pts.push({ t: tm, b: b });
-    if (b > maxB) maxB = b;
-    if (b === 0 && t > nowMs + 600000) break;
-  }
-  if (pts.length < 2 || maxB === 0) return;
-
-  var pL = 32, pR = 10, pT = 22, pB = 22;
-  var cw = w - pL - pR, ch = ht - pT - pB;
-  var tMin = pts[0].t.getTime(), tMax = pts[pts.length - 1].t.getTime();
-  var yMax = Math.ceil(maxB * 5) / 5 + 0.1;
-  function tx(tm) { return pL + ((tm.getTime() - tMin) / (tMax - tMin)) * cw; }
-  function ty(b) { return pT + ch - (b / yMax) * ch; }
-
-  ctx.clearRect(0, 0, w, ht);
-
-  /* Grid */
-  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
-  ctx.lineWidth = 0.5;
-  var ys = Math.ceil(yMax / 0.2);
-  for (var i = 0; i <= ys; i++) {
-    var yv = i * 0.2, y = ty(yv);
-    ctx.beginPath(); ctx.moveTo(pL, y); ctx.lineTo(w - pR, y); ctx.stroke();
-    ctx.fillStyle = 'rgba(235,235,245,0.6)';
-    ctx.font = '600 10px -apple-system,sans-serif';
-    ctx.textAlign = 'right';
-    ctx.fillText(yv.toFixed(1), pL - 6, y + 3);
-  }
-
-  /* X labels */
-  ctx.fillStyle = 'rgba(235,235,245,0.5)';
-  ctx.font = '500 9px -apple-system,sans-serif';
-  ctx.textAlign = 'center';
-  var ls = Math.max(1, Math.floor(pts.length / 5));
-  for (var i = 0; i < pts.length; i += ls) {
-    ctx.fillText(fmt(pts[i].t), tx(pts[i].t), ht - 4);
-  }
-
-  /* Area fill with gradient */
-  var grad = ctx.createLinearGradient(0, pT, 0, ht - pB);
-  grad.addColorStop(0, 'rgba(10,132,255,0.25)');
-  grad.addColorStop(1, 'rgba(10,132,255,0.02)');
-  ctx.beginPath();
-  ctx.moveTo(tx(pts[0].t), ty(0));
-  for (var i = 0; i < pts.length; i++) ctx.lineTo(tx(pts[i].t), ty(pts[i].b));
-  ctx.lineTo(tx(pts[pts.length - 1].t), ty(0));
-  ctx.closePath();
-  ctx.fillStyle = grad;
-  ctx.fill();
-
-  /* Line */
-  ctx.beginPath();
-  ctx.moveTo(tx(pts[0].t), ty(pts[0].b));
-  for (var i = 1; i < pts.length; i++) ctx.lineTo(tx(pts[i].t), ty(pts[i].b));
-  ctx.strokeStyle = '#0a84ff';
-  ctx.lineWidth = 2.5;
-  ctx.lineJoin = 'round';
-  ctx.lineCap = 'round';
-  ctx.stroke();
-
-  /* 0.5‰ Grenzlinie */
-  if (yMax >= 0.5) {
-    var y5 = ty(0.5);
-    ctx.beginPath(); ctx.setLineDash([5, 4]);
-    ctx.moveTo(pL, y5); ctx.lineTo(w - pR, y5);
-    ctx.strokeStyle = 'rgba(255,69,58,0.6)';
-    ctx.lineWidth = 1;
-    ctx.stroke(); ctx.setLineDash([]);
-    ctx.fillStyle = 'rgba(255,69,58,0.9)';
-    ctx.font = '600 9px -apple-system,sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText('0,5‰', pL + 3, y5 - 5);
-  }
-
-  /* Touch Interaction */
-  if (activeTouchX !== null) {
-    var x = Math.max(pL, Math.min(w - pR, activeTouchX));
-    var ratio = (x - pL) / cw;
-    var timeSel = tMin + ratio * (tMax - tMin);
-    var dateSel = new Date(timeSel);
-    var valSel = BAC.total(drinks, dateSel, weight, gender, meal);
-
-    ctx.beginPath(); ctx.moveTo(x, pT); ctx.lineTo(x, ht - pB);
-    ctx.strokeStyle = 'rgba(255,255,255,0.4)'; ctx.lineWidth = 1; ctx.stroke();
-
-    ctx.beginPath(); ctx.arc(x, ty(valSel), 5, 0, Math.PI * 2);
-    ctx.fillStyle = '#0a84ff'; ctx.fill();
-    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
-
-    var txt = fmt(dateSel) + '  ' + valSel.toFixed(2) + '‰';
-    ctx.font = '600 11px -apple-system,sans-serif';
-    var tm = ctx.measureText(txt);
-    var bx = x - tm.width / 2 - 8, by = pT - 16;
-    if (bx < 0) bx = 0;
-    if (bx + tm.width + 16 > w) bx = w - tm.width - 16;
-
-    ctx.fillStyle = 'rgba(28,28,30,0.95)';
-    var bw = tm.width + 16, bh = 22, br = 8;
-    ctx.beginPath();
-    ctx.moveTo(bx + br, by); ctx.lineTo(bx + bw - br, by);
-    ctx.quadraticCurveTo(bx + bw, by, bx + bw, by + br);
-    ctx.lineTo(bx + bw, by + bh - br);
-    ctx.quadraticCurveTo(bx + bw, by + bh, bx + bw - br, by + bh);
-    ctx.lineTo(bx + br, by + bh);
-    ctx.quadraticCurveTo(bx, by + bh, bx, by + bh - br);
-    ctx.lineTo(bx, by + br);
-    ctx.quadraticCurveTo(bx, by, bx + br, by);
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(255,255,255,0.15)'; ctx.lineWidth = 0.5; ctx.stroke();
-
-    ctx.fillStyle = '#fff'; ctx.textAlign = 'left';
-    ctx.fillText(txt, bx + 8, by + 15);
-  } else {
-    /* Current time dot */
-    var nx = tx(new Date(nowMs));
-    if (nx >= pL && nx <= w - pR) {
-      var curVal = BAC.total(drinks, new Date(nowMs), weight, gender, meal);
-      ctx.beginPath(); ctx.arc(nx, ty(curVal), 4, 0, Math.PI * 2);
-      ctx.fillStyle = '#0a84ff'; ctx.fill();
-      ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
-    }
-  }
-}
-
-/* =========================================================
-   TOUCH / MOUSE EVENTS for Chart
-   ========================================================= */
-var cv = $('chartCanvas');
-function handleInput(e) {
-  var r = cv.getBoundingClientRect();
-  var cx = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
-  activeTouchX = cx;
-  requestAnimationFrame(drawChart);
-}
-function stopInput() {
-  activeTouchX = null;
-  requestAnimationFrame(drawChart);
-}
-cv.addEventListener('mousemove', handleInput);
-cv.addEventListener('touchmove', function(e) { e.preventDefault(); handleInput(e); }, { passive: false });
-cv.addEventListener('touchstart', function(e) { e.preventDefault(); handleInput(e); }, { passive: false });
-cv.addEventListener('touchend', stopInput);
-cv.addEventListener('mouseleave', stopInput);
-
-/* =========================================================
-   UI EVENTS
-   ========================================================= */
-$('btnSettings').onclick = function() { showSettings = !showSettings; render(); };
-$('inWeight').onchange = function() { weight = parseFloat(this.value) || 80; save(); render(); };
-$('inGender').onchange = function() { gender = this.value; save(); render(); };
-$('inMeal').onchange = function() { meal = this.value || null; save(); render(); };
-$('btnMealClear').onclick = function() { meal = null; $('inMeal').value = ''; save(); render(); };
-
-document.querySelectorAll('.db[data-type]').forEach(function(btn) {
-  btn.onclick = function() {
-    modalType = this.getAttribute('data-type');
-    timeMode = 'now';
-    $('inDate').value = nowD(); $('inTime').value = nowT();
-    $('inCName').value = ''; $('inCAlc').value = ''; $('inCAmt').value = '';
-    $('modalErr').classList.add('hidden');
-    if (modalType === 'custom') {
-      $('modalTitle').textContent = 'Eigenes Getränk';
-      $('customFields').classList.remove('hidden');
-    } else {
-      var p = PR[modalType];
-      $('modalTitle').textContent = p.e + ' ' + p.n + ' hinzufügen';
-      $('customFields').classList.add('hidden');
-    }
-    $('btnTimeNow').className = 'mb mba'; $('btnTimeCustom').className = 'mb mbi';
-    $('timeInputs').classList.add('hidden');
-    $('modal').classList.remove('hidden');
-  };
-});
-
-$('btnTimeNow').onclick = function() {
-  timeMode = 'now'; this.className = 'mb mba';
-  $('btnTimeCustom').className = 'mb mbi'; $('timeInputs').classList.add('hidden');
-};
-$('btnTimeCustom').onclick = function() {
-  timeMode = 'custom'; this.className = 'mb mba';
-  $('btnTimeNow').className = 'mb mbi'; $('timeInputs').classList.remove('hidden');
-};
-$('btnCancel').onclick = function() { $('modal').classList.add('hidden'); };
-$('modal').onclick = function(e) { if (e.target === $('modal')) $('modal').classList.add('hidden'); };
-
-$('btnAdd').onclick = function() {
-  var name, alc, amt;
-  if (modalType === 'custom') {
-    name = $('inCName').value.trim();
-    alc = parseFloat($('inCAlc').value);
-    amt = parseFloat($('inCAmt').value);
-    if (!name || isNaN(alc) || isNaN(amt) || alc <= 0 || amt <= 0) {
-      $('modalErr').textContent = 'Alle Felder korrekt ausfüllen.';
-      $('modalErr').classList.remove('hidden');
-      return;
-    }
-  } else {
-    var p = PR[modalType]; name = p.n; alc = p.a; amt = p.m;
-  }
-  var time;
-  if (timeMode === 'now') {
-    time = new Date();
-  } else {
-    var hm = $('inTime').value.split(':').map(Number);
-    time = new Date($('inDate').value);
-    time.setHours(hm[0], hm[1], 0, 0);
-  }
-  drinks.push({
-    id: Date.now() + Math.random(),
-    name: name, emoji: PR[modalType] ? PR[modalType].e : '🍸',
-    alcohol: alc, amount: amt, time: time
-  });
-  drinks.sort(function(a, b) { return a.time - b.time; });
-  $('modal').classList.add('hidden');
-  save(); render();
-};
-
-$('btnChart').onclick = function() {
-  showChart = !showChart;
-  this.textContent = '📊 Verlauf ' + (showChart ? '▲' : '▼');
-  if (!showChart) $('chartWrap').classList.add('hidden');
-  render();
-};
-
-/* Auto-refresh */
-setInterval(render, 30000);
-window.addEventListener('resize', function() { if (showChart) render(); });
-render();
-
+var cv=$('chartCanvas');
+function handleInput(e){var r=cv.getBoundingClientRect();var cx=(e.touches?e.touches[0].clientX:e.clientX)-r.left;activeTouchX=cx;requestAnimationFrame(drawChart)}
+function stopInput(){activeTouchX=null;requestAnimationFrame(drawChart)}
+cv.addEventListener('mousemove',handleInput);cv.addEventListener('touchmove',function(e){e.preventDefault();handleInput(e)},{passive:false});
+cv.addEventListener('touchstart',function(e){e.preventDefault();handleInput(e)},{passive:false});cv.addEventListener('touchend',stopInput);cv.addEventListener('mouseleave',stopInput);
+$('btnSettings').onclick=function(){showSettings=!showSettings;render()};
+$('inWeight').onchange=function(){weight=parseFloat(this.value)||80;save();render()};
+$('inAge').onchange=function(){age=parseInt(this.value)||40;if(age<16)age=16;if(age>99)age=99;save();render()};
+$('inGender').onchange=function(){gender=this.value;save();render()};
+$('inMeal').onchange=function(){meal=this.value||null;save();render()};
+$('btnMealClear').onclick=function(){meal=null;$('inMeal').value='';save();render()};
+document.querySelectorAll('.db[data-type]').forEach(function(btn){btn.onclick=function(){
+modalType=this.getAttribute('data-type');timeMode='now';$('inDate').value=nowD();$('inTime').value=nowT();
+$('inCName').value='';$('inCAlc').value='';$('inCAmt').value='';$('modalErr').classList.add('hidden');
+if(modalType==='custom'){$('modalTitle').textContent='Eigenes Getränk';$('customFields').classList.remove('hidden')}
+else{var p=PR[modalType];$('modalTitle').textContent=p.e+' '+p.n+' hinzufügen';$('customFields').classList.add('hidden')}
+$('btnTimeNow').className='mb mba';$('btnTimeCustom').className='mb mbi';$('timeInputs').classList.add('hidden');$('modal').classList.remove('hidden')}});
+$('btnTimeNow').onclick=function(){timeMode='now';this.className='mb mba';$('btnTimeCustom').className='mb mbi';$('timeInputs').classList.add('hidden')};
+$('btnTimeCustom').onclick=function(){timeMode='custom';this.className='mb mba';$('btnTimeNow').className='mb mbi';$('timeInputs').classList.remove('hidden')};
+$('btnCancel').onclick=function(){$('modal').classList.add('hidden')};
+$('modal').onclick=function(e){if(e.target===$('modal'))$('modal').classList.add('hidden')};
+$('btnAdd').onclick=function(){var name,alc,amt;
+if(modalType==='custom'){name=$('inCName').value.trim();alc=parseFloat($('inCAlc').value);amt=parseFloat($('inCAmt').value);
+if(!name||isNaN(alc)||isNaN(amt)||alc<=0||amt<=0){$('modalErr').textContent='Alle Felder korrekt ausfüllen.';$('modalErr').classList.remove('hidden');return}}
+else{var p=PR[modalType];name=p.n;alc=p.a;amt=p.m}
+var time;if(timeMode==='now')time=new Date();
+else{var hm=$('inTime').value.split(':').map(Number);time=new Date($('inDate').value);time.setHours(hm[0],hm[1],0,0)}
+drinks.push({id:Date.now()+Math.random(),name:name,emoji:PR[modalType]?PR[modalType].e:'🍸',alcohol:alc,amount:amt,time:time});
+drinks.sort(function(a,b){return a.time-b.time});$('modal').classList.add('hidden');save();render()};
+$('btnChart').onclick=function(){showChart=!showChart;this.textContent='📊 Verlauf '+(showChart?'▲':'▼');if(!showChart)$('chartWrap').classList.add('hidden');render()};
+setInterval(render,30000);window.addEventListener('resize',function(){if(showChart)render()});render();
 })();
 </script>
 </body>
