@@ -112,13 +112,26 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .disc{padding:14px 2px;font-size:10px;color:var(--tx3);line-height:1.6;margin-top:4px}
 .disc strong{color:var(--tx2)}
 
+/* ── Amount Stepper ── */
+.amt-wrap{background:var(--fill);border-radius:16px;padding:16px;margin-bottom:16px}
+.amt-row{display:flex;align-items:center;justify-content:center;gap:0;margin-top:8px}
+.amt-btn{width:52px;height:52px;border:none;border-radius:14px;font-size:24px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:inherit;-webkit-tap-highlight-color:transparent}
+.amt-minus{background:rgba(255,69,58,.12);color:var(--rd)}
+.amt-plus{background:rgba(48,209,88,.12);color:var(--gn)}
+.amt-btn:active{transform:scale(.85)}
+.amt-val{min-width:100px;text-align:center;font-size:32px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.03em;padding:0 8px;color:var(--tx)}
+.amt-presets{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;justify-content:center}
+.amt-pre{background:var(--fill2);border:1px solid transparent;color:var(--tx2);border-radius:10px;padding:7px 12px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit;-webkit-tap-highlight-color:transparent}
+.amt-pre.active{background:var(--acg);border-color:var(--ac);color:var(--ac)}
+.amt-pre:active{transform:scale(.92)}
+
 /* ── Empty State ── */
 .es{text-align:center;padding:48px 24px;color:var(--tx3)}
 .esi{font-size:48px;margin-bottom:14px;opacity:.5}
 .est{font-size:15px;line-height:1.6;font-weight:500}
 
 /* ── Watch/Small ── */
-@media(max-width:220px){body{font-size:11px}.app{padding:4px!important}.bac-v{font-size:2.2rem!important}.dg{gap:4px!important}.db{padding:8px 4px!important;font-size:11px!important;min-height:38px!important}.de{font-size:14px!important}.card{padding:8px!important}.badge{font-size:9px!important;padding:3px 8px!important}.sr{font-size:11px!important}.stl{font-size:11px!important}.di{padding:6px!important}.hdr{padding:6px 4px!important}.hdr h1{font-size:14px!important}.mc{padding:10px!important}.mb{min-height:38px!important;padding:8px!important;font-size:12px!important}.cc{height:160px!important}.disc{font-size:8px!important;padding:6px!important}}
+@media(max-width:220px){body{font-size:11px}.app{padding:4px!important}.bac-v{font-size:2.2rem!important}.dg{gap:4px!important}.db{padding:8px 4px!important;font-size:11px!important;min-height:38px!important}.de{font-size:14px!important}.card{padding:8px!important}.badge{font-size:9px!important;padding:3px 8px!important}.sr{font-size:11px!important}.stl{font-size:11px!important}.di{padding:6px!important}.hdr{padding:6px 4px!important}.hdr h1{font-size:14px!important}.mc{padding:10px!important}.mb{min-height:38px!important;padding:8px!important;font-size:12px!important}.cc{height:160px!important}.disc{font-size:8px!important;padding:6px!important}.amt-btn{width:40px!important;height:40px!important;font-size:18px!important;border-radius:10px!important}.amt-val{font-size:22px!important;min-width:70px!important}.amt-pre{padding:5px 8px!important;font-size:10px!important}.amt-wrap{padding:10px!important}}
 @media(max-width:200px){.bac-v{font-size:1.8rem!important}.dg{gap:3px!important}.db{padding:6px 3px!important;font-size:10px!important;min-height:32px!important}.de{font-size:12px!important}.sr{font-size:10px!important}.card{padding:6px!important;margin-bottom:6px!important}.hdr h1{font-size:12px!important}.disc{display:none}}
 @media(min-width:221px)and(max-width:380px){body{font-size:13px}.bac-v{font-size:3rem!important}.db{min-height:44px!important}}
 </style>
@@ -173,8 +186,14 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       <div><span class="fl">Name</span><input type="text" id="inCName" placeholder="z.B. Gin Tonic"></div>
       <div><span class="fl">Alkohol (Vol%)</span><input type="number" id="inCAlc" placeholder="z.B. 10" step="0.1" inputmode="decimal"></div>
     </div>
-    <div class="cf hidden" id="amountField">
-      <div><span class="fl">Menge (ml)</span><input type="number" id="inCAmt" value="500" inputmode="numeric" min="1"></div>
+    <div class="amt-wrap hidden" id="amountField">
+      <span class="fl">Menge (ml)</span>
+      <div class="amt-row">
+        <button class="amt-btn amt-minus" id="amtMinus" type="button">−</button>
+        <div class="amt-val" id="amtDisplay">330</div>
+        <button class="amt-btn amt-plus" id="amtPlus" type="button">+</button>
+      </div>
+      <div class="amt-presets" id="amtPresets"></div>
     </div>
     <div class="tc">
       <button class="mb mba" id="btnTimeNow">Jetzt</button>
@@ -359,20 +378,38 @@ $('inAge').onchange=function(){age=parseInt(this.value)||40;if(age<16)age=16;if(
 $('inGender').onchange=function(){gender=this.value;save();render()};
 $('inMeal').onchange=function(){meal=this.value||null;save();render()};
 $('btnMealClear').onclick=function(){meal=null;$('inMeal').value='';save();render()};
+var currentAmt=330,amtStep=10;
+var PRESETS={bier:[200,330,500],wein:[100,200,250],schnaps:[20,40,60],custom:[]};
+function updateAmtDisplay(){$('amtDisplay').textContent=currentAmt;
+var pres=$('amtPresets').querySelectorAll('.amt-pre');
+pres.forEach(function(p){p.classList.toggle('active',parseInt(p.textContent)===currentAmt)})}
+function buildPresets(type){var pp=PRESETS[type]||[];var el=$('amtPresets');el.innerHTML='';
+pp.forEach(function(v){var b=document.createElement('button');b.className='amt-pre';b.type='button';b.textContent=v;
+if(v===currentAmt)b.classList.add('active');
+b.onclick=function(){currentAmt=v;updateAmtDisplay()};el.appendChild(b)})}
+$('amtMinus').onclick=function(){currentAmt=Math.max(10,currentAmt-amtStep);updateAmtDisplay()};
+$('amtPlus').onclick=function(){currentAmt+=amtStep;updateAmtDisplay()};
+var holdTimer=null,holdSpeed=null;
+function startHold(dir){var fn=function(){currentAmt=dir>0?currentAmt+amtStep:Math.max(10,currentAmt-amtStep);updateAmtDisplay()};
+holdTimer=setTimeout(function(){holdSpeed=setInterval(fn,80)},400)}
+function stopHold(){clearTimeout(holdTimer);clearInterval(holdSpeed)}
+$('amtMinus').addEventListener('touchstart',function(e){e.preventDefault();startHold(-1)},{passive:false});
+$('amtMinus').addEventListener('touchend',stopHold);$('amtMinus').addEventListener('touchcancel',stopHold);
+$('amtPlus').addEventListener('touchstart',function(e){e.preventDefault();startHold(1)},{passive:false});
+$('amtPlus').addEventListener('touchend',stopHold);$('amtPlus').addEventListener('touchcancel',stopHold);
 document.querySelectorAll('.db[data-type]').forEach(function(btn){btn.onclick=function(){
 modalType=this.getAttribute('data-type');timeMode='now';$('inDate').value=nowD();$('inTime').value=nowT();
 $('inCName').value='';$('inCAlc').value='';$('modalErr').classList.add('hidden');
-if(modalType==='custom'){$('modalTitle').textContent='Eigenes Getränk';$('customFields').classList.remove('hidden');$('inCAmt').value=''}
-else{var p=PR[modalType];$('modalTitle').textContent=p.e+' '+p.n+' hinzufügen';$('customFields').classList.add('hidden');$('inCAmt').value=p.m}
-$('amountField').classList.remove('hidden');
+if(modalType==='custom'){$('modalTitle').textContent='Eigenes Getränk';$('customFields').classList.remove('hidden');currentAmt=100;amtStep=10}
+else{var p=PR[modalType];$('modalTitle').textContent=p.e+' '+p.n+' hinzufügen';$('customFields').classList.add('hidden');currentAmt=p.m;amtStep=modalType==='schnaps'?5:modalType==='wein'?25:50}
+buildPresets(modalType);updateAmtDisplay();$('amountField').classList.remove('hidden');
 $('btnTimeNow').className='mb mba';$('btnTimeCustom').className='mb mbi';$('timeInputs').classList.add('hidden');$('modal').classList.remove('hidden')}});
 $('btnTimeNow').onclick=function(){timeMode='now';this.className='mb mba';$('btnTimeCustom').className='mb mbi';$('timeInputs').classList.add('hidden')};
 $('btnTimeCustom').onclick=function(){timeMode='custom';this.className='mb mba';$('btnTimeNow').className='mb mbi';$('timeInputs').classList.remove('hidden')};
 $('btnCancel').onclick=function(){$('modal').classList.add('hidden')};
 $('modal').onclick=function(e){if(e.target===$('modal'))$('modal').classList.add('hidden')};
-$('btnAdd').onclick=function(){var name,alc,amt;
-amt=parseFloat($('inCAmt').value);
-if(isNaN(amt)||amt<=0){$('modalErr').textContent='Bitte gültige Menge (ml) eingeben.';$('modalErr').classList.remove('hidden');return}
+$('btnAdd').onclick=function(){var name,alc,amt=currentAmt;
+if(amt<=0){$('modalErr').textContent='Bitte gültige Menge eingeben.';$('modalErr').classList.remove('hidden');return}
 if(modalType==='custom'){name=$('inCName').value.trim();alc=parseFloat($('inCAlc').value);
 if(!name||isNaN(alc)||alc<=0){$('modalErr').textContent='Alle Felder korrekt ausfüllen.';$('modalErr').classList.remove('hidden');return}}
 else{var p=PR[modalType];name=p.n;alc=p.a}
