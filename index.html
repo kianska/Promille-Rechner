@@ -115,15 +115,32 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 /* ── Amount Stepper ── */
 .amt-wrap{background:var(--fill);border-radius:16px;padding:16px;margin-bottom:16px}
 .amt-row{display:flex;align-items:center;justify-content:center;gap:0;margin-top:8px}
+.amt-row.sml{margin-top:4px}
 .amt-btn{width:52px;height:52px;border:none;border-radius:14px;font-size:24px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:inherit;-webkit-tap-highlight-color:transparent}
 .amt-minus{background:rgba(255,69,58,.12);color:var(--rd)}
 .amt-plus{background:rgba(48,209,88,.12);color:var(--gn)}
 .amt-btn:active{transform:scale(.85)}
 .amt-val{min-width:100px;text-align:center;font-size:32px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.03em;padding:0 8px;color:var(--tx)}
+.sml-v{font-size:26px;min-width:70px}
 .amt-presets{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;justify-content:center}
 .amt-pre{background:var(--fill2);border:1px solid transparent;color:var(--tx2);border-radius:10px;padding:7px 12px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit;-webkit-tap-highlight-color:transparent}
 .amt-pre.active{background:var(--acg);border-color:var(--ac);color:var(--ac)}
 .amt-pre:active{transform:scale(.92)}
+
+/* ── Gender Toggle ── */
+.gender-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.gbtn{background:var(--fill);border:1px solid transparent;color:var(--tx2);border-radius:12px;padding:12px 8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit;text-align:center;-webkit-tap-highlight-color:transparent}
+.gbtn.active{background:var(--acg);border-color:var(--ac);color:var(--ac)}
+.gbtn:active{transform:scale(.95)}
+
+/* ── Meal Buttons ── */
+.meal-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.meal-b{background:var(--fill2);border:1px solid transparent;color:var(--tx2);border-radius:10px;padding:9px 12px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit;-webkit-tap-highlight-color:transparent;flex:1;min-width:60px;text-align:center}
+.meal-b.active{background:var(--acg);border-color:var(--ac);color:var(--ac)}
+.meal-b:active{transform:scale(.92)}
+.meal-clr{background:rgba(255,69,58,.08);color:var(--rd);flex:0 0 auto}
+.meal-clr.active{background:rgba(255,69,58,.15);border-color:var(--rd);color:var(--rd)}
+.meal-show{text-align:center;margin-top:8px;font-size:14px;font-weight:600;color:var(--ac);padding:6px}
 
 /* ── Empty State ── */
 .es{text-align:center;padding:48px 24px;color:var(--tx3)}
@@ -131,7 +148,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .est{font-size:15px;line-height:1.6;font-weight:500}
 
 /* ── Watch/Small ── */
-@media(max-width:220px){body{font-size:11px}.app{padding:4px!important}.bac-v{font-size:2.2rem!important}.dg{gap:4px!important}.db{padding:8px 4px!important;font-size:11px!important;min-height:38px!important}.de{font-size:14px!important}.card{padding:8px!important}.badge{font-size:9px!important;padding:3px 8px!important}.sr{font-size:11px!important}.stl{font-size:11px!important}.di{padding:6px!important}.hdr{padding:6px 4px!important}.hdr h1{font-size:14px!important}.mc{padding:10px!important}.mb{min-height:38px!important;padding:8px!important;font-size:12px!important}.cc{height:160px!important}.disc{font-size:8px!important;padding:6px!important}.amt-btn{width:40px!important;height:40px!important;font-size:18px!important;border-radius:10px!important}.amt-val{font-size:22px!important;min-width:70px!important}.amt-pre{padding:5px 8px!important;font-size:10px!important}.amt-wrap{padding:10px!important}}
+@media(max-width:220px){body{font-size:11px}.app{padding:4px!important}.bac-v{font-size:2.2rem!important}.dg{gap:4px!important}.db{padding:8px 4px!important;font-size:11px!important;min-height:38px!important}.de{font-size:14px!important}.card{padding:8px!important}.badge{font-size:9px!important;padding:3px 8px!important}.sr{font-size:11px!important}.stl{font-size:11px!important}.di{padding:6px!important}.hdr{padding:6px 4px!important}.hdr h1{font-size:14px!important}.mc{padding:10px!important}.mb{min-height:38px!important;padding:8px!important;font-size:12px!important}.cc{height:160px!important}.disc{font-size:8px!important;padding:6px!important}.amt-btn{width:40px!important;height:40px!important;font-size:18px!important;border-radius:10px!important}.amt-val{font-size:22px!important;min-width:70px!important}.sml-v{font-size:18px!important;min-width:50px!important}.amt-pre{padding:5px 8px!important;font-size:10px!important}.amt-wrap{padding:10px!important}.gbtn{padding:8px 4px!important;font-size:11px!important}.meal-b{padding:6px 6px!important;font-size:10px!important;min-width:40px!important}.meal-show{font-size:11px!important}.gender-row{gap:4px!important}}
 @media(max-width:200px){.bac-v{font-size:1.8rem!important}.dg{gap:3px!important}.db{padding:6px 3px!important;font-size:10px!important;min-height:32px!important}.de{font-size:12px!important}.sr{font-size:10px!important}.card{padding:6px!important;margin-bottom:6px!important}.hdr h1{font-size:12px!important}.disc{display:none}}
 @media(min-width:221px)and(max-width:380px){body{font-size:13px}.bac-v{font-size:3rem!important}.db{min-height:44px!important}}
 </style>
@@ -143,14 +160,33 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     <button class="btn-s" id="btnSettings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
   </div>
   <div class="card sp hidden" id="settings">
-    <div class="srow">
-      <div><span class="fl">Gewicht (kg)</span><input type="number" id="inWeight" value="80" inputmode="decimal"></div>
-      <div><span class="fl">Geschlecht</span><select id="inGender"><option value="male">Männlich</option><option value="female">Weiblich</option></select></div>
+    <span class="fl">Gewicht (kg)</span>
+    <div class="amt-row sml">
+      <button class="amt-btn amt-minus" id="wMinus" type="button">−</button>
+      <div class="amt-val sml-v" id="wDisplay">80</div>
+      <button class="amt-btn amt-plus" id="wPlus" type="button">+</button>
     </div>
-    <div class="srow" style="margin-top:12px">
-      <div><span class="fl">Alter</span><input type="number" id="inAge" value="40" inputmode="numeric" min="16" max="99"></div>
-      <div><span class="fl">Letzte Mahlzeit</span><div class="mr"><input type="time" id="inMeal" value=""><button class="mcl hidden" id="btnMealClear">✕</button></div></div>
+    <div class="amt-presets" style="margin-top:8px"><button class="amt-pre" data-w="55">55</button><button class="amt-pre" data-w="65">65</button><button class="amt-pre" data-w="75">75</button><button class="amt-pre" data-w="85">85</button><button class="amt-pre" data-w="100">100</button></div>
+    <div style="margin-top:14px"><span class="fl">Alter</span>
+    <div class="amt-row sml">
+      <button class="amt-btn amt-minus" id="aMinus" type="button">−</button>
+      <div class="amt-val sml-v" id="aDisplay">40</div>
+      <button class="amt-btn amt-plus" id="aPlus" type="button">+</button>
     </div>
+    <div class="amt-presets" style="margin-top:8px"><button class="amt-pre" data-a="20">20</button><button class="amt-pre" data-a="30">30</button><button class="amt-pre" data-a="40">40</button><button class="amt-pre" data-a="50">50</button><button class="amt-pre" data-a="60">60</button></div></div>
+    <div style="margin-top:14px"><span class="fl">Geschlecht</span>
+    <div class="gender-row"><button class="gbtn" id="gMale" type="button">♂ Männlich</button><button class="gbtn" id="gFemale" type="button">♀ Weiblich</button></div></div>
+  </div>
+  <div class="card" id="mealCard">
+    <span class="fl">Letzte Mahlzeit</span>
+    <div class="meal-btns">
+      <button class="meal-b" data-ml="now" type="button">Jetzt</button>
+      <button class="meal-b" data-ml="30" type="button">Vor 30m</button>
+      <button class="meal-b" data-ml="60" type="button">Vor 1h</button>
+      <button class="meal-b" data-ml="120" type="button">Vor 2h</button>
+      <button class="meal-b meal-clr" id="mealOff" type="button">Nüchtern</button>
+    </div>
+    <div class="meal-show hidden" id="mealShow"><span id="mealLabel">–</span></div>
   </div>
   <div id="bacDisplay" class="bac-d hidden">
     <div class="bac-v" id="bacValue">0.00<span class="bac-u">‰</span></div>
@@ -175,7 +211,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     <div class="dlh"><span class="stl" style="margin-bottom:0" id="drinkCount">Getränke (0)</span><div id="clearWrap"><button class="clr" id="btnClearAll">Alle löschen</button></div></div>
     <div id="drinkList"></div>
   </div>
-  <button class="ct hidden" id="btnChart">📊 Verlauf ▼</button>
   <div class="cc hidden" id="chartWrap"><canvas id="chartCanvas"></canvas></div>
   <div class="disc" id="disclaimer"></div>
 </div>
@@ -196,10 +231,16 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       <div class="amt-presets" id="amtPresets"></div>
     </div>
     <div class="tc">
-      <button class="mb mba" id="btnTimeNow">Jetzt</button>
-      <button class="mb mbi" id="btnTimeCustom">Andere Zeit</button>
+      <span class="fl">Wann getrunken?</span>
+      <div class="meal-btns" style="margin-top:6px">
+        <button class="meal-b time-b active" data-toff="0" type="button">Jetzt</button>
+        <button class="meal-b time-b" data-toff="15" type="button">Vor 15m</button>
+        <button class="meal-b time-b" data-toff="30" type="button">Vor 30m</button>
+        <button class="meal-b time-b" data-toff="60" type="button">Vor 1h</button>
+        <button class="meal-b time-b" data-toff="120" type="button">Vor 2h</button>
+      </div>
+      <div id="timeShow" style="text-align:center;margin-top:8px;font-size:14px;font-weight:600;color:var(--ac);padding:4px"></div>
     </div>
-    <div class="ti hidden" id="timeInputs"><input type="date" id="inDate"><input type="time" id="inTime"></div>
     <div class="merr hidden" id="modalErr"></div>
     <div class="ma"><button class="mb mbs" id="btnCancel">Abbrechen</button><button class="mb mbp" id="btnAdd">Hinzufügen</button></div>
   </div>
@@ -281,7 +322,7 @@ return{c:'st-h',t:'Stark alkoholisiert',col:'var(--rdd)'};}
 var PR={bier:{n:'Bier',e:'🍺',a:5,m:330},wein:{n:'Wein',e:'🍷',a:12,m:250},schnaps:{n:'Schnaps',e:'🍸',a:40,m:20}};
 var weight=S.g('pw',80),gender=S.g('pg','male'),meal=S.g('pm',null),age=S.g('pa',40);
 var drinks=(S.g('pd',[])).map(function(d){return{id:d.id,name:d.name,emoji:d.emoji,alcohol:d.alcohol,amount:d.amount,time:new Date(d.time)}});
-var showSettings=false,showChart=false,confirmingReset=false,modalType=null,timeMode='now',activeTouchX=null;
+var showSettings=false,confirmingReset=false,modalType=null,timeOffset=0,activeTouchX=null;
 var $=function(id){return document.getElementById(id)};
 function save(){S.s('pw',weight);S.s('pg',gender);S.s('pa',age);meal?S.s('pm',meal):S.r('pm');
 S.s('pd',drinks.map(function(d){return{id:d.id,name:d.name,emoji:d.emoji,alcohol:d.alcohol,amount:d.amount,time:d.time.toISOString()}}));}
@@ -298,9 +339,16 @@ if(pk.bac>0){$('peakRow').classList.remove('hidden');$('peakValue').textContent=
 else $('peakRow').classList.add('hidden');
 $('phaseValue').textContent=resorb?'↑ Anflutung':'↓ Abbau';$('phaseValue').style.color=resorb?'var(--yw)':'var(--gn)';
 }else{$('bacDisplay').classList.add('hidden');$('emptyState').classList.remove('hidden')}
-$('settings').classList.toggle('hidden',!showSettings);$('inWeight').value=weight;$('inGender').value=gender;$('inAge').value=age;$('inMeal').value=meal||'';$('btnMealClear').classList.toggle('hidden',!meal);
+$('settings').classList.toggle('hidden',!showSettings);
+$('wDisplay').textContent=weight;$('aDisplay').textContent=age;
+$('gMale').classList.toggle('active',gender==='male');$('gFemale').classList.toggle('active',gender==='female');
+document.querySelectorAll('[data-w]').forEach(function(b){b.classList.toggle('active',parseInt(b.getAttribute('data-w'))===weight)});
+document.querySelectorAll('[data-a]').forEach(function(b){b.classList.toggle('active',parseInt(b.getAttribute('data-a'))===age)});
+document.querySelectorAll('.meal-b:not(.meal-clr)').forEach(function(b){b.classList.remove('active')});
+$('mealOff').classList.toggle('active',!meal);
+if(meal){$('mealShow').classList.remove('hidden');$('mealLabel').textContent='🍽 '+meal+' Uhr'}else{$('mealShow').classList.add('hidden')}
 if(drinks.length>0){
-$('drinkListSection').classList.remove('hidden');$('btnChart').classList.remove('hidden');$('drinkCount').textContent='Getränke ('+drinks.length+')';
+$('drinkListSection').classList.remove('hidden');$('drinkCount').textContent='Getränke ('+drinks.length+')';
 var cw=$('clearWrap');
 if(confirmingReset){cw.innerHTML='<div class="ic"><span>Sicher?</span><button class="cy" id="cfY">Ja</button><button class="cn" id="cfN">Nein</button></div>';
 $('cfY').onclick=function(){drinks=[];meal=null;confirmingReset=false;save();render()};$('cfN').onclick=function(){confirmingReset=false;render()}}
@@ -311,10 +359,10 @@ html+='<div class="dim">'+fmt(d.time)+' · '+d.alcohol+'% · '+d.amount+' ml</di
 html+='<button class="del" data-did="'+d.id+'"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>'}
 $('drinkList').innerHTML=html;
 $('drinkList').querySelectorAll('.del').forEach(function(b){b.onclick=function(){var id=parseFloat(this.getAttribute('data-did'));drinks=drinks.filter(function(d){return d.id!==id});save();render()}});
-}else{$('drinkListSection').classList.add('hidden');$('btnChart').classList.add('hidden');$('chartWrap').classList.add('hidden');showChart=false}
+}else{$('drinkListSection').classList.add('hidden');$('chartWrap').classList.add('hidden')}
 var rv=BAC.rf(gender,age).toFixed(2).replace('.',','),defInfo=meal?'mit Mahlzeit-Korrektur':'nüchtern';
 $('disclaimer').innerHTML='<strong>Sicherheitsrechner:</strong> Widmark-Formel (r='+rv+', Alter '+age+', Abbau '+BAC.ELIM_RES.toFixed(2).replace('.',',')+'/'+BAC.ELIM_RATE.toFixed(2).replace('.',',')+' ‰/h, ρ=0,789, '+defInfo+'). Konservative Werte — zeigt eher zu viel als zu wenig an. <strong>Keine Grundlage für Verkehrsentscheidungen. Im Zweifel: Nicht fahren.</strong>';
-if(showChart&&drinks.length>0)drawChart()}
+if(drinks.length>0)drawChart()}
 
 function drawChart(){
 $('chartWrap').classList.remove('hidden');
@@ -373,11 +421,24 @@ function stopInput(){activeTouchX=null;requestAnimationFrame(drawChart)}
 cv.addEventListener('mousemove',handleInput);cv.addEventListener('touchmove',function(e){e.preventDefault();handleInput(e)},{passive:false});
 cv.addEventListener('touchstart',function(e){e.preventDefault();handleInput(e)},{passive:false});cv.addEventListener('touchend',stopInput);cv.addEventListener('mouseleave',stopInput);
 $('btnSettings').onclick=function(){showSettings=!showSettings;render()};
-$('inWeight').onchange=function(){weight=parseFloat(this.value)||80;save();render()};
-$('inAge').onchange=function(){age=parseInt(this.value)||40;if(age<16)age=16;if(age>99)age=99;save();render()};
-$('inGender').onchange=function(){gender=this.value;save();render()};
-$('inMeal').onchange=function(){meal=this.value||null;save();render()};
-$('btnMealClear').onclick=function(){meal=null;$('inMeal').value='';save();render()};
+/* Weight stepper */
+$('wMinus').onclick=function(){weight=Math.max(30,weight-1);save();render()};
+$('wPlus').onclick=function(){weight=Math.min(200,weight+1);save();render()};
+document.querySelectorAll('[data-w]').forEach(function(b){b.onclick=function(){weight=parseInt(this.getAttribute('data-w'));save();render()}});
+/* Age stepper */
+$('aMinus').onclick=function(){age=Math.max(16,age-1);save();render()};
+$('aPlus').onclick=function(){age=Math.min(99,age+1);save();render()};
+document.querySelectorAll('[data-a]').forEach(function(b){b.onclick=function(){age=parseInt(this.getAttribute('data-a'));save();render()}});
+/* Gender buttons */
+$('gMale').onclick=function(){gender='male';save();render()};
+$('gFemale').onclick=function(){gender='female';save();render()};
+/* Meal buttons */
+document.querySelectorAll('.meal-b[data-ml]').forEach(function(b){b.onclick=function(){
+var v=this.getAttribute('data-ml');
+if(v==='now'){var n=new Date();meal=('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2)}
+else{var d=new Date(Date.now()-parseInt(v)*60000);meal=('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
+save();render()}});
+$('mealOff').onclick=function(){meal=null;save();render()};
 var currentAmt=330,amtStep=10;
 var PRESETS={bier:[200,330,500],wein:[100,200,250],schnaps:[20,40,60],custom:[]};
 function updateAmtDisplay(){$('amtDisplay').textContent=currentAmt;
@@ -398,14 +459,18 @@ $('amtMinus').addEventListener('touchend',stopHold);$('amtMinus').addEventListen
 $('amtPlus').addEventListener('touchstart',function(e){e.preventDefault();startHold(1)},{passive:false});
 $('amtPlus').addEventListener('touchend',stopHold);$('amtPlus').addEventListener('touchcancel',stopHold);
 document.querySelectorAll('.db[data-type]').forEach(function(btn){btn.onclick=function(){
-modalType=this.getAttribute('data-type');timeMode='now';$('inDate').value=nowD();$('inTime').value=nowT();
+modalType=this.getAttribute('data-type');timeOffset=0;
 $('inCName').value='';$('inCAlc').value='';$('modalErr').classList.add('hidden');
 if(modalType==='custom'){$('modalTitle').textContent='Eigenes Getränk';$('customFields').classList.remove('hidden');currentAmt=100;amtStep=10}
 else{var p=PR[modalType];$('modalTitle').textContent=p.e+' '+p.n+' hinzufügen';$('customFields').classList.add('hidden');currentAmt=p.m;amtStep=modalType==='schnaps'?5:modalType==='wein'?25:50}
 buildPresets(modalType);updateAmtDisplay();$('amountField').classList.remove('hidden');
-$('btnTimeNow').className='mb mba';$('btnTimeCustom').className='mb mbi';$('timeInputs').classList.add('hidden');$('modal').classList.remove('hidden')}});
-$('btnTimeNow').onclick=function(){timeMode='now';this.className='mb mba';$('btnTimeCustom').className='mb mbi';$('timeInputs').classList.add('hidden')};
-$('btnTimeCustom').onclick=function(){timeMode='custom';this.className='mb mba';$('btnTimeNow').className='mb mbi';$('timeInputs').classList.remove('hidden')};
+document.querySelectorAll('.time-b').forEach(function(b){b.classList.toggle('active',parseInt(b.getAttribute('data-toff'))===0)});
+var showTime=new Date();$('timeShow').textContent=fmt(showTime);
+$('modal').classList.remove('hidden')}});
+document.querySelectorAll('.time-b').forEach(function(b){b.onclick=function(){
+timeOffset=parseInt(this.getAttribute('data-toff'));
+document.querySelectorAll('.time-b').forEach(function(x){x.classList.remove('active')});this.classList.add('active');
+var t=new Date(Date.now()-timeOffset*60000);$('timeShow').textContent=fmt(t)}});
 $('btnCancel').onclick=function(){$('modal').classList.add('hidden')};
 $('modal').onclick=function(e){if(e.target===$('modal'))$('modal').classList.add('hidden')};
 $('btnAdd').onclick=function(){var name,alc,amt=currentAmt;
@@ -413,12 +478,10 @@ if(amt<=0){$('modalErr').textContent='Bitte gültige Menge eingeben.';$('modalEr
 if(modalType==='custom'){name=$('inCName').value.trim();alc=parseFloat($('inCAlc').value);
 if(!name||isNaN(alc)||alc<=0){$('modalErr').textContent='Alle Felder korrekt ausfüllen.';$('modalErr').classList.remove('hidden');return}}
 else{var p=PR[modalType];name=p.n;alc=p.a}
-var time;if(timeMode==='now')time=new Date();
-else{var hm=$('inTime').value.split(':').map(Number);time=new Date($('inDate').value);time.setHours(hm[0],hm[1],0,0)}
+var time=new Date(Date.now()-timeOffset*60000);
 drinks.push({id:Date.now()+Math.random(),name:name,emoji:PR[modalType]?PR[modalType].e:'🍸',alcohol:alc,amount:amt,time:time});
 drinks.sort(function(a,b){return a.time-b.time});$('modal').classList.add('hidden');save();render()};
-$('btnChart').onclick=function(){showChart=!showChart;this.textContent='📊 Verlauf '+(showChart?'▲':'▼');if(!showChart)$('chartWrap').classList.add('hidden');render()};
-setInterval(render,30000);window.addEventListener('resize',function(){if(showChart)render()});render();
+setInterval(render,30000);window.addEventListener('resize',render);render();
 })();
 </script>
 </body>
