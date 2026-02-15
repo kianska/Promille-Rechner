@@ -186,6 +186,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       <button class="meal-b" data-ml="120" type="button">Vor 2h</button>
       <button class="meal-b meal-clr" id="mealOff" type="button">Nüchtern</button>
     </div>
+    <div style="margin-top:10px"><span class="fl">Oder Uhrzeit wählen</span><div class="mr"><input type="time" id="inMealTime" value=""><button class="mcl hidden" id="btnMealClear">✕</button></div></div>
     <div class="meal-show hidden" id="mealShow"><span id="mealLabel">–</span></div>
   </div>
   <div id="bacDisplay" class="bac-d hidden">
@@ -239,6 +240,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
         <button class="meal-b time-b" data-toff="60" type="button">Vor 1h</button>
         <button class="meal-b time-b" data-toff="120" type="button">Vor 2h</button>
       </div>
+      <div style="margin-top:10px"><span class="fl">Oder Uhrzeit wählen</span><input type="time" id="inDrinkTime" value=""></div>
       <div id="timeShow" style="text-align:center;margin-top:8px;font-size:14px;font-weight:600;color:var(--ac);padding:4px"></div>
     </div>
     <div class="merr hidden" id="modalErr"></div>
@@ -322,7 +324,7 @@ return{c:'st-h',t:'Stark alkoholisiert',col:'var(--rdd)'};}
 var PR={bier:{n:'Bier',e:'🍺',a:5,m:330},wein:{n:'Wein',e:'🍷',a:12,m:250},schnaps:{n:'Schnaps',e:'🍸',a:40,m:20}};
 var weight=S.g('pw',80),gender=S.g('pg','male'),meal=S.g('pm',null),age=S.g('pa',40);
 var drinks=(S.g('pd',[])).map(function(d){return{id:d.id,name:d.name,emoji:d.emoji,alcohol:d.alcohol,amount:d.amount,time:new Date(d.time)}});
-var showSettings=false,confirmingReset=false,modalType=null,timeOffset=0,activeTouchX=null;
+var showSettings=false,confirmingReset=false,modalType=null,timeOffset=0,customDrinkTime=null,activeTouchX=null;
 var $=function(id){return document.getElementById(id)};
 function save(){S.s('pw',weight);S.s('pg',gender);S.s('pa',age);meal?S.s('pm',meal):S.r('pm');
 S.s('pd',drinks.map(function(d){return{id:d.id,name:d.name,emoji:d.emoji,alcohol:d.alcohol,amount:d.amount,time:d.time.toISOString()}}));}
@@ -346,6 +348,7 @@ document.querySelectorAll('[data-w]').forEach(function(b){b.classList.toggle('ac
 document.querySelectorAll('[data-a]').forEach(function(b){b.classList.toggle('active',parseInt(b.getAttribute('data-a'))===age)});
 document.querySelectorAll('.meal-b:not(.meal-clr)').forEach(function(b){b.classList.remove('active')});
 $('mealOff').classList.toggle('active',!meal);
+$('inMealTime').value=meal||'';$('btnMealClear').classList.toggle('hidden',!meal);
 if(meal){$('mealShow').classList.remove('hidden');$('mealLabel').textContent='🍽 '+meal+' Uhr'}else{$('mealShow').classList.add('hidden')}
 if(drinks.length>0){
 $('drinkListSection').classList.remove('hidden');$('drinkCount').textContent='Getränke ('+drinks.length+')';
@@ -439,6 +442,8 @@ if(v==='now'){var n=new Date();meal=('0'+n.getHours()).slice(-2)+':'+('0'+n.getM
 else{var d=new Date(Date.now()-parseInt(v)*60000);meal=('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
 save();render()}});
 $('mealOff').onclick=function(){meal=null;save();render()};
+$('inMealTime').onchange=function(){meal=this.value||null;save();render()};
+$('btnMealClear').onclick=function(){meal=null;save();render()};
 var currentAmt=330,amtStep=10;
 var PRESETS={bier:[200,330,500],wein:[100,200,250],schnaps:[20,40,60],custom:[]};
 function updateAmtDisplay(){$('amtDisplay').textContent=currentAmt;
@@ -459,18 +464,22 @@ $('amtMinus').addEventListener('touchend',stopHold);$('amtMinus').addEventListen
 $('amtPlus').addEventListener('touchstart',function(e){e.preventDefault();startHold(1)},{passive:false});
 $('amtPlus').addEventListener('touchend',stopHold);$('amtPlus').addEventListener('touchcancel',stopHold);
 document.querySelectorAll('.db[data-type]').forEach(function(btn){btn.onclick=function(){
-modalType=this.getAttribute('data-type');timeOffset=0;
+modalType=this.getAttribute('data-type');timeOffset=0;customDrinkTime=null;
 $('inCName').value='';$('inCAlc').value='';$('modalErr').classList.add('hidden');
 if(modalType==='custom'){$('modalTitle').textContent='Eigenes Getränk';$('customFields').classList.remove('hidden');currentAmt=100;amtStep=10}
 else{var p=PR[modalType];$('modalTitle').textContent=p.e+' '+p.n+' hinzufügen';$('customFields').classList.add('hidden');currentAmt=p.m;amtStep=modalType==='schnaps'?5:modalType==='wein'?25:50}
 buildPresets(modalType);updateAmtDisplay();$('amountField').classList.remove('hidden');
 document.querySelectorAll('.time-b').forEach(function(b){b.classList.toggle('active',parseInt(b.getAttribute('data-toff'))===0)});
+$('inDrinkTime').value='';
 var showTime=new Date();$('timeShow').textContent=fmt(showTime);
 $('modal').classList.remove('hidden')}});
 document.querySelectorAll('.time-b').forEach(function(b){b.onclick=function(){
-timeOffset=parseInt(this.getAttribute('data-toff'));
+timeOffset=parseInt(this.getAttribute('data-toff'));customDrinkTime=null;$('inDrinkTime').value='';
 document.querySelectorAll('.time-b').forEach(function(x){x.classList.remove('active')});this.classList.add('active');
 var t=new Date(Date.now()-timeOffset*60000);$('timeShow').textContent=fmt(t)}});
+$('inDrinkTime').onchange=function(){
+if(this.value){customDrinkTime=this.value;document.querySelectorAll('.time-b').forEach(function(x){x.classList.remove('active')});
+$('timeShow').textContent=customDrinkTime+' Uhr'}else{customDrinkTime=null}};
 $('btnCancel').onclick=function(){$('modal').classList.add('hidden')};
 $('modal').onclick=function(e){if(e.target===$('modal'))$('modal').classList.add('hidden')};
 $('btnAdd').onclick=function(){var name,alc,amt=currentAmt;
@@ -478,7 +487,9 @@ if(amt<=0){$('modalErr').textContent='Bitte gültige Menge eingeben.';$('modalEr
 if(modalType==='custom'){name=$('inCName').value.trim();alc=parseFloat($('inCAlc').value);
 if(!name||isNaN(alc)||alc<=0){$('modalErr').textContent='Alle Felder korrekt ausfüllen.';$('modalErr').classList.remove('hidden');return}}
 else{var p=PR[modalType];name=p.n;alc=p.a}
-var time=new Date(Date.now()-timeOffset*60000);
+var time;
+if(customDrinkTime){var hm=customDrinkTime.split(':').map(Number);time=new Date();time.setHours(hm[0],hm[1],0,0);if(time>new Date())time.setDate(time.getDate()-1)}
+else{time=new Date(Date.now()-timeOffset*60000)}
 drinks.push({id:Date.now()+Math.random(),name:name,emoji:PR[modalType]?PR[modalType].e:'🍸',alcohol:alc,amount:amt,time:time});
 drinks.sort(function(a,b){return a.time-b.time});$('modal').classList.add('hidden');save();render()};
 setInterval(render,30000);window.addEventListener('resize',render);render();
