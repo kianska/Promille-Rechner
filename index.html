@@ -172,7 +172,9 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     <div class="cf hidden" id="customFields">
       <div><span class="fl">Name</span><input type="text" id="inCName" placeholder="z.B. Gin Tonic"></div>
       <div><span class="fl">Alkohol (Vol%)</span><input type="number" id="inCAlc" placeholder="z.B. 10" step="0.1" inputmode="decimal"></div>
-      <div><span class="fl">Menge (ml)</span><input type="number" id="inCAmt" placeholder="z.B. 300" inputmode="numeric"></div>
+    </div>
+    <div class="cf hidden" id="amountField">
+      <div><span class="fl">Menge (ml)</span><input type="number" id="inCAmt" value="500" inputmode="numeric" min="1"></div>
     </div>
     <div class="tc">
       <button class="mb mba" id="btnTimeNow">Jetzt</button>
@@ -211,9 +213,9 @@ ELIM_RATE:0.10,ELIM_RES:0.08,ETH_DENSITY:0.789,
 mealParams:function(drinkTime,mealTimeStr){
 if(!mealTimeStr)return{duration:45,deficit:0.0};
 var parts=mealTimeStr.split(':').map(Number);var mealDate=new Date(drinkTime);mealDate.setHours(parts[0],parts[1],0,0);
-if(mealDate>drinkTime)mealDate.setDate(mealDate.getDate()-1);
-var h=(drinkTime-mealDate)/3600000;
-if(h<0.5)return{duration:90,deficit:0.20};if(h<1)return{duration:75,deficit:0.15};if(h<2)return{duration:60,deficit:0.10};if(h<3)return{duration:50,deficit:0.05};if(h<5)return{duration:45,deficit:0.0};return{duration:45,deficit:0.0};
+var h=Math.abs(drinkTime-mealDate)/3600000;
+if(h>12)h=24-h;
+if(h<0.5)return{duration:90,deficit:0.10};if(h<1)return{duration:75,deficit:0.08};if(h<2)return{duration:60,deficit:0.05};if(h<3)return{duration:50,deficit:0.02};if(h<5)return{duration:45,deficit:0.0};return{duration:45,deficit:0.0};
 },
 total:function(drinks,atTime,weight,gender,mealTimeStr,age){
 if(!drinks.length||!weight||weight<=0)return 0;
@@ -257,7 +259,7 @@ function getSt(b){
 if(b<0.005)return{c:'st-s',t:'Nüchtern',col:'var(--gn)'};if(b<0.3)return{c:'st-l',t:'Leicht',col:'var(--yw)'};
 if(b<0.5)return{c:'st-i',t:'Fahruntüchtig',col:'var(--or)'};if(b<1.1)return{c:'st-d',t:'Erheblich',col:'var(--rd)'};
 return{c:'st-h',t:'Stark alkoholisiert',col:'var(--rdd)'};}
-var PR={bier:{n:'Bier',e:'🍺',a:5,m:500},wein:{n:'Wein',e:'🍷',a:12,m:200},schnaps:{n:'Schnaps',e:'🍸',a:40,m:40}};
+var PR={bier:{n:'Bier',e:'🍺',a:5,m:330},wein:{n:'Wein',e:'🍷',a:12,m:250},schnaps:{n:'Schnaps',e:'🍸',a:40,m:20}};
 var weight=S.g('pw',80),gender=S.g('pg','male'),meal=S.g('pm',null),age=S.g('pa',40);
 var drinks=(S.g('pd',[])).map(function(d){return{id:d.id,name:d.name,emoji:d.emoji,alcohol:d.alcohol,amount:d.amount,time:new Date(d.time)}});
 var showSettings=false,showChart=false,confirmingReset=false,modalType=null,timeMode='now',activeTouchX=null;
@@ -359,18 +361,21 @@ $('inMeal').onchange=function(){meal=this.value||null;save();render()};
 $('btnMealClear').onclick=function(){meal=null;$('inMeal').value='';save();render()};
 document.querySelectorAll('.db[data-type]').forEach(function(btn){btn.onclick=function(){
 modalType=this.getAttribute('data-type');timeMode='now';$('inDate').value=nowD();$('inTime').value=nowT();
-$('inCName').value='';$('inCAlc').value='';$('inCAmt').value='';$('modalErr').classList.add('hidden');
-if(modalType==='custom'){$('modalTitle').textContent='Eigenes Getränk';$('customFields').classList.remove('hidden')}
-else{var p=PR[modalType];$('modalTitle').textContent=p.e+' '+p.n+' hinzufügen';$('customFields').classList.add('hidden')}
+$('inCName').value='';$('inCAlc').value='';$('modalErr').classList.add('hidden');
+if(modalType==='custom'){$('modalTitle').textContent='Eigenes Getränk';$('customFields').classList.remove('hidden');$('inCAmt').value=''}
+else{var p=PR[modalType];$('modalTitle').textContent=p.e+' '+p.n+' hinzufügen';$('customFields').classList.add('hidden');$('inCAmt').value=p.m}
+$('amountField').classList.remove('hidden');
 $('btnTimeNow').className='mb mba';$('btnTimeCustom').className='mb mbi';$('timeInputs').classList.add('hidden');$('modal').classList.remove('hidden')}});
 $('btnTimeNow').onclick=function(){timeMode='now';this.className='mb mba';$('btnTimeCustom').className='mb mbi';$('timeInputs').classList.add('hidden')};
 $('btnTimeCustom').onclick=function(){timeMode='custom';this.className='mb mba';$('btnTimeNow').className='mb mbi';$('timeInputs').classList.remove('hidden')};
 $('btnCancel').onclick=function(){$('modal').classList.add('hidden')};
 $('modal').onclick=function(e){if(e.target===$('modal'))$('modal').classList.add('hidden')};
 $('btnAdd').onclick=function(){var name,alc,amt;
-if(modalType==='custom'){name=$('inCName').value.trim();alc=parseFloat($('inCAlc').value);amt=parseFloat($('inCAmt').value);
-if(!name||isNaN(alc)||isNaN(amt)||alc<=0||amt<=0){$('modalErr').textContent='Alle Felder korrekt ausfüllen.';$('modalErr').classList.remove('hidden');return}}
-else{var p=PR[modalType];name=p.n;alc=p.a;amt=p.m}
+amt=parseFloat($('inCAmt').value);
+if(isNaN(amt)||amt<=0){$('modalErr').textContent='Bitte gültige Menge (ml) eingeben.';$('modalErr').classList.remove('hidden');return}
+if(modalType==='custom'){name=$('inCName').value.trim();alc=parseFloat($('inCAlc').value);
+if(!name||isNaN(alc)||alc<=0){$('modalErr').textContent='Alle Felder korrekt ausfüllen.';$('modalErr').classList.remove('hidden');return}}
+else{var p=PR[modalType];name=p.n;alc=p.a}
 var time;if(timeMode==='now')time=new Date();
 else{var hm=$('inTime').value.split(':').map(Number);time=new Date($('inDate').value);time.setHours(hm[0],hm[1],0,0)}
 drinks.push({id:Date.now()+Math.random(),name:name,emoji:PR[modalType]?PR[modalType].e:'🍸',alcohol:alc,amount:amt,time:time});
